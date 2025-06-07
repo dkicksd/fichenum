@@ -101,6 +101,7 @@
     </div>
 
     <!-- Header futuriste -->
+    <header>
     <nav class="navbar navbar-expand-lg futuristic-header">
         <div class="container">
             <a class="navbar-brand logo" href="#">FicheNum</a>
@@ -119,6 +120,9 @@
             </div>
         </div>
     </nav>
+    </header>
+
+    <main>
 
     <!-- Section Héro -->
     <section class="hero-section">
@@ -287,7 +291,9 @@
             <a href="#" class="neon-button">Commencer gratuitement</a>
         </div>
     </section>
-    
+
+    </main>
+
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
