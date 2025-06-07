@@ -229,6 +229,14 @@
             margin: 5rem 0;
         }
 
+        .features-section h2,
+        .features-section p.lead,
+        #how-it-works h2,
+        #how-it-works p.lead {
+            color: #fff;
+            text-shadow: 0 0 6px rgba(0,0,0,0.6);
+        }
+
         .feature-card {
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
