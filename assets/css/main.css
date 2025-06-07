@@ -141,8 +141,13 @@
             background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
             font-size: 1.1rem;
+            color: #333;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             transition: all 0.3s ease;
+        }
+
+        .magic-input::placeholder {
+            color: #999;
         }
 
         .magic-input:focus {
@@ -232,6 +237,7 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #333;
         }
 
         .feature-card:hover {
@@ -311,6 +317,7 @@
             background: rgba(255, 255, 255, 0.95);
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            color: #333;
         }
 
         /* CTA Section avec effet néon */
@@ -414,6 +421,7 @@
             border-radius: 15px;
             padding: 20px;
             margin-bottom: 20px;
+            color: #333;
         }
 
         .result-features {
