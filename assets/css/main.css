@@ -56,11 +56,11 @@
 
         /* Header futuriste */
         .futuristic-header {
-            background: rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(10px);
+            background: #000;
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            position: sticky;
+            position: fixed;
             top: 0;
+            width: 100%;
             z-index: 1000;
         }
 
@@ -86,6 +86,7 @@
             align-items: center;
             position: relative;
             overflow: hidden;
+            padding-top: 70px;
         }
 
         .morphing-blob {
