@@ -1,8 +1,8 @@
 <?php
-$host = 'puzzleefreeto54.mysql.db';
-$db   = 'puzzleefreeto54';
-$user = 'puzzleefreeto54';
-$pass = 'Ckassou54';
+$host = '';
+$db   = '';
+$user = '';
+$pass = '';
 $charset = 'utf8mb4';
 
 $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
