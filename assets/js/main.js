@@ -145,14 +145,31 @@
             document.getElementById('closeResult').addEventListener('click', closeResultWindow);
             document.getElementById('overlay').addEventListener('click', closeResultWindow);
             document.getElementById('copyButton').addEventListener('click', copyToClipboard);
-            
+
             animateOnScroll(); // Appel initial
-            
+
             // Suivi des événements pour les types de contenu
             document.querySelectorAll('.content-type').forEach(type => {
                 type.addEventListener('click', function() {
                     const typeName = this.querySelector('div').textContent;
                     console.log(`Type de contenu sélectionné: ${typeName}`);
+                });
+            });
+
+            // Affichage/masquage des mots de passe
+            document.querySelectorAll('.toggle-password').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const input = document.querySelector(this.dataset.target);
+                    const icon = this.querySelector('i');
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
                 });
             });
         });
