@@ -14,6 +14,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://fichenum.com">
     <meta property="og:image" content="https://fichenum.com/images/og-image.jpg">
+    <meta property="og:locale" content="fr_FR">
     
     <!-- Schema.org pour Google -->
     <script type="application/ld+json">
