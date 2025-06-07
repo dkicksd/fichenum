@@ -347,7 +347,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="loginPassword" class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" id="loginPassword" name="password" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="loginPassword" name="password" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#loginPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Se connecter</button>
                     </form>
@@ -376,7 +381,12 @@
                         </div>
                         <div class="mb-3">
                             <label for="registerPassword" class="form-label">Mot de passe</label>
-                            <input type="password" class="form-control" id="registerPassword" name="password" required>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="registerPassword" name="password" required>
+                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#registerPassword">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
                         </div>
                         <button type="submit" class="btn btn-primary w-100">Créer mon compte</button>
                     </form>
