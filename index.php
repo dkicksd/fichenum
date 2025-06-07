@@ -45,11 +45,13 @@
     <title>FicheNum - Générateur d'Ultra-Fiches Interactives | IA Pédagogique</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/main.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/openai.css">
 </head>
 <body>
     <!-- Particules d'arrière-plan -->
-    <div class="particles" id="particles"></div>
 
     <!-- Overlay pour la fenêtre de résultat -->
     <div class="overlay" id="overlay"></div>
@@ -105,20 +107,20 @@
 
     <!-- Header futuriste -->
     <header>
-    <nav class="navbar navbar-expand-lg futuristic-header">
+    <nav class="navbar navbar-expand-lg openai-header">
         <div class="container">
-            <a class="navbar-brand logo" href="#">FicheNum</a>
+            <a class="navbar-brand" href="#">FicheNum</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto text-white">
-                    <li class="nav-item"><a class="nav-link text-white" href="#features">Fonctionnalités</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#how-it-works">Comment ça marche</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#use-cases">Cas d'usage</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#pricing">Tarifs</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Connexion</a></li>
-                    <li class="nav-item"><a class="nav-link text-white" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Inscription</a></li>
+                <ul class="navbar-nav ms-auto ">
+                    <li class="nav-item"><a class="nav-link " href="#features">Fonctionnalités</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#how-it-works">Comment ça marche</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#use-cases">Cas d'usage</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#pricing">Tarifs</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Connexion</a></li>
+                    <li class="nav-item"><a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Inscription</a></li>
                 </ul>
             </div>
         </div>
@@ -129,11 +131,10 @@
 
     <!-- Section Héro -->
     <section class="hero-section">
-        <div class="morphing-blob"></div>
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-lg-8">
-                    <h1 class="hero-title">Ultra-Fiches<br><span style="color: #4ecdc4;">Interactives</span></h1>
+                    <h1 class="hero-title">Ultra-Fiches<br><span style="color: #10a37f;">Interactives</span></h1>
                     <p class="hero-subtitle">
                         Transformez n'importe quel contenu en fiche interactive ultra-condensée en moins de 30 secondes. 
                         Lien, PDF, photo, ou simple question - FicheGPT fait le reste !
@@ -175,8 +176,8 @@
     <section id="features" class="features-section">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-4 text-white fw-bold">Pourquoi FicheNum ?</h2>
-                <p class="lead text-white">L'IA qui révolutionne votre façon d'apprendre</p>
+                <h2 class="display-4  fw-bold">Pourquoi FicheNum ?</h2>
+                <p class="lead ">L'IA qui révolutionne votre façon d'apprendre</p>
             </div>
             <div class="row">
                 <div class="col-md-4">
@@ -214,8 +215,8 @@
     <section id="how-it-works" class="py-5">
         <div class="container">
             <div class="text-center mb-5">
-                <h2 class="display-4 text-white fw-bold">Comment ça marche ?</h2>
-                <p class="lead text-white">4 étapes, 30 secondes, résultat magique</p>
+                <h2 class="display-4  fw-bold">Comment ça marche ?</h2>
+                <p class="lead ">4 étapes, 30 secondes, résultat magique</p>
             </div>
             <div class="timeline">
                 <div class="timeline-item">
@@ -289,8 +290,8 @@
     <!-- CTA Section -->
     <section class="cta-section">
         <div class="container">
-            <h2 class="display-4 text-white fw-bold mb-4">Prêt à révolutionner votre apprentissage ?</h2>
-            <p class="lead text-white mb-4">Rejoignez les milliers d'utilisateurs qui ont déjà adopté FicheNum</p>
+            <h2 class="display-4  fw-bold mb-4">Prêt à révolutionner votre apprentissage ?</h2>
+            <p class="lead  mb-4">Rejoignez les milliers d'utilisateurs qui ont déjà adopté FicheNum</p>
             <a href="#" class="neon-button">Commencer gratuitement</a>
         </div>
     </section>
