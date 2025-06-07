@@ -71,6 +71,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             animation: glow 2s ease-in-out infinite alternate;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
         }
 
         @keyframes glow {
