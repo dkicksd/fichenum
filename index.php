@@ -7,6 +7,8 @@
     <meta name="keywords" content="fiche interactive, générateur de fiches, résumé automatique, outil pédagogique, création de contenu, IA éducative, synthèse de contenu">
     <meta name="author" content="FicheNum">
     <meta name="robots" content="index, follow">
+    <meta name="google-site-verification" content="YOUR_CODE_HERE">
+    <link rel="canonical" href="https://fichenum.com/">
     
     <!-- Open Graph / Réseaux sociaux -->
     <meta property="og:title" content="FicheNum - Générateur d'Ultra-Fiches Interactives">
