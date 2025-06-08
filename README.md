@@ -30,3 +30,7 @@ FicheNum aims to simplify content digestion for students, teachers and professio
 ## User registration
 
 The `register.php` page lets visitors create an account. It checks whether the email already exists, stores a verification token and sends a confirmation link using PHP's `mail()` function. Following the link triggers `verify.php` which marks the user as verified.
+
+## Admin dashboard
+
+Users with the `admin` role can access `/admin/dashboard.php` after logging in. The navigation bar on the home page shows a Dashboard link for admins.
