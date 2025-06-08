@@ -22,8 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $token = bin2hex(random_bytes(16));
 
-            $stmt = $pdo->prepare('INSERT INTO nfn_users (email, password, username, verify_token, verified) VALUES (?, ?, ?, ?, 0)');
-            $stmt->execute([$email, $hash, $username, $token]);
+            $role = 'user';
+            $stmt = $pdo->prepare('INSERT INTO nfn_users (email, password, username, verify_token, verified, role) VALUES (?, ?, ?, ?, 0, ?)');
+            $stmt->execute([$email, $hash, $username, $token, $role]);
 
             $domain = $_SERVER['HTTP_HOST'];
             $verifyLink = 'http://' . $domain . '/verify.php?token=' . $token;

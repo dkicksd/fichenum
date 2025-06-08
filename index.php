@@ -1,6 +1,7 @@
 <?php
 session_start();
 $username = $_SESSION["username"] ?? null;
+$role = $_SESSION['role'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -39,6 +40,9 @@ $username = $_SESSION["username"] ?? null;
         <div class="ms-lg-3 mt-3 mt-lg-0">
 <?php if ($username): ?>
           <span class="navbar-text me-3">Bonjour, <?= htmlspecialchars($username) ?></span>
+<?php if ($role === 'admin'): ?>
+          <a href="/admin/dashboard.php" class="btn btn-sm btn-warning me-2">Dashboard</a>
+<?php endif; ?>
           <a href="/logout.php" class="btn btn-sm btn-outline-light">Déconnexion</a>
 <?php else: ?>
           <a href="/login.php" class="btn btn-sm btn-outline-light">Connexion</a>

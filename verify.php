@@ -5,11 +5,11 @@ $message = 'Lien de vérification invalide.';
 
 $token = $_GET['token'] ?? '';
 if ($token) {
-    $stmt = $pdo->prepare('SELECT id FROM users WHERE verify_token = ? AND verified = 0');
+    $stmt = $pdo->prepare('SELECT id FROM nfn_users WHERE verify_token = ? AND verified = 0');
     $stmt->execute([$token]);
     $user = $stmt->fetch();
     if ($user) {
-        $stmt = $pdo->prepare('UPDATE users SET verified = 1, verify_token = NULL WHERE id = ?');
+        $stmt = $pdo->prepare('UPDATE nfn_users SET verified = 1, verify_token = NULL WHERE id = ?');
         $stmt->execute([$user['id']]);
         $message = 'Votre adresse email a été vérifiée avec succès.';
     }
