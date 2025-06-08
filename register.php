@@ -25,10 +25,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt = $pdo->prepare('INSERT INTO nfn_users (email, password, username, verify_token, verified) VALUES (?, ?, ?, ?, 0)');
             $stmt->execute([$email, $hash, $username, $token]);
 
-            $verifyLink = 'http://' . $_SERVER['HTTP_HOST'] . '/verify.php?token=' . $token;
+            $domain = $_SERVER['HTTP_HOST'];
+            $verifyLink = 'http://' . $domain . '/verify.php?token=' . $token;
             $subject = 'Confirmez votre inscription';
-            $body = "Bienvenue sur Fichesnum !\nCliquez sur ce lien pour vérifier votre adresse email : $verifyLink";
-            @mail($email, $subject, $body);
+
+            $body = '<html><body>';
+            $body .= '<p>Bienvenue sur FichesNum !</p>';
+            $body .= '<p>Cliquez sur le bouton ci-dessous pour vérifier votre adresse email :</p>';
+            $body .= '<p style="text-align:center; margin:20px 0;">'
+                   . '<a href="' . $verifyLink . '" '
+                   . 'style="background:#00b874;color:#fff;padding:10px 20px;text-decoration:none;border-radius:5px;"'
+                   . '>Vérifier mon adresse</a></p>';
+            $body .= '</body></html>';
+
+            $headers = "MIME-Version: 1.0\r\n";
+            $headers .= "Content-type: text/html; charset=UTF-8\r\n";
+            $headers .= "From: FichesNum <no-reply@" . $domain . ">\r\n";
+
+            @mail($email, $subject, $body, $headers);
 
             $message = "Inscription réussie. Vérifiez vos emails pour confirmer votre compte.";
         }
