@@ -38,6 +38,11 @@
     .navbar-brand, .nav-link {
       color: white !important;
     }
+
+    .navbar-brand .logo {
+      height: 32px;
+      width: 32px;
+    }
     
     .nav-link:hover {
       color: var(--primary-100) !important;
