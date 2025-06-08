@@ -5,13 +5,16 @@ $message = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+    $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
+    $confirm = $_POST['confirm'] ?? '';
 
-    if (!$email || !$password) {
-        $message = "Email ou mot de passe invalide.";
+    if (!$email || !$username || !$password || !$confirm) {
+        $message = "Tous les champs sont obligatoires.";
+    } elseif ($password !== $confirm) {
+        $message = "Les mots de passe ne correspondent pas.";
     } else {
-        // Vérifie si l'email existe déjà
-        $stmt = $pdo->prepare('SELECT id FROM users WHERE email = ?');
+        $stmt = $pdo->prepare('SELECT id FROM nfn_users WHERE email = ?');
         $stmt->execute([$email]);
         if ($stmt->fetch()) {
             $message = "Cette adresse email est déjà enregistrée.";
@@ -19,8 +22,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $hash = password_hash($password, PASSWORD_DEFAULT);
             $token = bin2hex(random_bytes(16));
 
-            $stmt = $pdo->prepare('INSERT INTO users (email, password, verify_token, verified) VALUES (?, ?, ?, 0)');
-            $stmt->execute([$email, $hash, $token]);
+            $stmt = $pdo->prepare('INSERT INTO nfn_users (email, password, username, verify_token, verified) VALUES (?, ?, ?, ?, 0)');
+            $stmt->execute([$email, $hash, $username, $token]);
 
             $verifyLink = 'http://' . $_SERVER['HTTP_HOST'] . '/verify.php?token=' . $token;
             $subject = 'Confirmez votre inscription';
@@ -62,6 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
   </div>
 </nav>
+
 <div class="container py-5" style="max-width:600px;">
   <h1 class="mb-4">Créer un compte</h1>
   <?php if ($message): ?>
@@ -69,16 +73,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <?php endif; ?>
   <form method="post" novalidate>
     <div class="mb-3">
+      <label for="username" class="form-label">Pseudo</label>
+      <input type="text" class="form-control" id="username" name="username" required>
+    </div>
+    <div class="mb-3">
       <label for="email" class="form-label">Adresse email</label>
       <input type="email" class="form-control" id="email" name="email" required>
     </div>
-    <div class="mb-3">
+    <div class="mb-3 position-relative">
       <label for="password" class="form-label">Mot de passe</label>
       <input type="password" class="form-control" id="password" name="password" required>
+      <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('password')">
+        <i class="fas fa-eye-slash" id="eye-password"></i>
+      </span>
+    </div>
+    <div class="mb-3 position-relative">
+      <label for="confirm" class="form-label">Confirmer le mot de passe</label>
+      <input type="password" class="form-control" id="confirm" name="confirm" required>
+      <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('confirm')">
+        <i class="fas fa-eye-slash" id="eye-confirm"></i>
+      </span>
     </div>
     <button type="submit" class="btn btn-primary">S'inscrire</button>
   </form>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+function togglePassword(fieldId) {
+  const field = document.getElementById(fieldId);
+  const eye = document.getElementById('eye-' + fieldId);
+  if (field.type === 'password') {
+    field.type = 'text';
+    eye.classList.remove('fa-eye-slash');
+    eye.classList.add('fa-eye');
+  } else {
+    field.type = 'password';
+    eye.classList.remove('fa-eye');
+    eye.classList.add('fa-eye-slash');
+  }
+}
+</script>
 </body>
 </html>
