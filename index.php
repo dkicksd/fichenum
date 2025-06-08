@@ -1,409 +1,351 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="FicheNum transforme tout contenu en fiches interactives ultra-condensées. Générez des fiches pédagogiques avec texte, infographie, audio et quiz en 30 secondes.">
-    <meta name="keywords" content="fiche interactive, générateur de fiches, résumé automatique, outil pédagogique, création de contenu, IA éducative, synthèse de contenu">
-    <meta name="author" content="FicheNum">
-    <meta name="robots" content="index, follow">
-    <meta name="google-site-verification" content="YOUR_CODE_HERE">
-    <link rel="canonical" href="https://fichenum.com/">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FichesNum – App micro-learning sociale nouvelle génération</title>
+  <meta name="description" content="FichesNum, c'est la première app sociale de micro-learning : fiches interactives, feed communautaire, XP, leaderboard, tout pour apprendre et s’amuser sur mobile ou desktop.">
+  <meta name="theme-color" content="#1877f2">
+  <link rel="manifest" href="manifest.json">
+  <!-- Tailwind CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
     
-    <!-- Open Graph / Réseaux sociaux -->
-    <meta property="og:title" content="FicheNum - Générateur d'Ultra-Fiches Interactives">
-    <meta property="og:description" content="Transformez n'importe quel contenu en fiche interactive ultra-condensée en moins de 30 secondes.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://fichenum.com">
-    <meta property="og:image" content="https://fichenum.com/images/og-image.jpg">
-    <meta property="og:locale" content="fr_FR">
+    body {
+      font-family: 'Inter', sans-serif;
+    }
     
-    <!-- Schema.org pour Google -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "SoftwareApplication",
-      "name": "FicheNum",
-      "description": "Générateur d'Ultra-Fiches Interactives utilisant l'IA pour créer des résumés pédagogiques multimédia",
-      "applicationCategory": "EducationalApplication",
-      "operatingSystem": "Web",
-      "offers": {
-        "@type": "Offer",
-        "price": "0",
-        "priceCurrency": "EUR",
-        "availability": "https://schema.org/InStock"
-      },
-      "aggregateRating": {
-        "@type": "AggregateRating",
-        "ratingValue": "4.8",
-        "ratingCount": "157",
-        "bestRating": "5"
+    .menu-overlay {
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s, visibility 0.3s;
+    }
+    
+    .menu-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    
+    .side-menu {
+      transform: translateX(100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    
+    .side-menu.active {
+      transform: translateX(0);
+    }
+    
+    .menu-item {
+      transition: all 0.2s ease;
+    }
+    
+    .menu-item:hover {
+      background-color: #f0f7ff;
+      transform: translateX(5px);
+    }
+    
+    .like-btn.animated {
+      animation: likeAnimation 0.6s ease;
+    }
+    
+    @keyframes likeAnimation {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="w-full bg-blue-600 h-16 flex items-center justify-between px-4 md:px-8 sticky top-0 shadow-md z-10">
+    <div class="flex items-center gap-2">
+      <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="5" width="20" height="18" rx="3.5" fill="#fff"/><rect x="4" y="5" width="20" height="18" rx="3.5" stroke="#42b72a" stroke-width="2"/><rect x="8" y="8" width="12" height="3" rx="1.5" fill="#1877f2"/><rect x="8" y="13" width="9" height="3" rx="1.5" fill="#e7eaf2"/></svg>
+      <span class="font-bold text-xl text-white">FichesNum</span>
+    </div>
+    <button id="menuButton" class="w-9 h-9 rounded-full flex flex-col items-center justify-center bg-blue-500 hover:bg-blue-700 transition-all" aria-label="Ouvrir le menu">
+      <span class="w-5 h-1 bg-white rounded mb-1 transition-transform"></span>
+      <span class="w-5 h-1 bg-white rounded mb-1 transition-transform"></span>
+      <span class="w-5 h-1 bg-white rounded transition-transform"></span>
+    </button>
+  </header>
+
+  <!-- Menu Overlay -->
+  <div id="menuOverlay" class="menu-overlay fixed inset-0 bg-black/50 z-20"></div>
+  
+  <!-- Side Menu -->
+  <aside id="sideMenu" class="side-menu fixed top-0 right-0 h-full w-4/5 max-w-sm bg-white z-30 shadow-xl">
+    <div class="p-6 border-b border-gray-200 flex justify-between items-center">
+      <div class="flex items-center gap-2">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none"><rect x="4" y="5" width="20" height="18" rx="3.5" fill="#1877f2"/><rect x="4" y="5" width="20" height="18" rx="3.5" stroke="#42b72a" stroke-width="2"/><rect x="8" y="8" width="12" height="3" rx="1.5" fill="#fff"/><rect x="8" y="13" width="9" height="3" rx="1.5" fill="#e7eaf2"/></svg>
+        <span class="font-bold text-xl text-blue-700">FichesNum</span>
+      </div>
+      <button id="closeMenu" class="w-10 h-10 rounded-full flex items-center justify-center text-gray-500 hover:bg-gray-100">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+    
+    <div class="p-4 flex items-center gap-3 border-b border-gray-200">
+      <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Votre profil" class="w-12 h-12 rounded-full border-2 border-blue-200 object-cover">
+      <div>
+        <div class="font-bold text-gray-900">Emma Dubois</div>
+        <div class="text-sm text-gray-500">Niveau 12 • 1560 XP</div>
+      </div>
+    </div>
+    
+    <nav class="py-3">
+      <ul class="space-y-1">
+        <li>
+          <a href="#" class="menu-item flex items-center gap-3 p-4 text-gray-700 hover:text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+            </svg>
+            <span class="font-medium">Accueil</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="menu-item flex items-center gap-3 p-4 text-gray-700 hover:text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+            </svg>
+            <span class="font-medium">Explorer</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="menu-item flex items-center gap-3 p-4 text-gray-700 hover:text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+            <span class="font-medium">Mes Fiches</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="menu-item flex items-center gap-3 p-4 text-gray-700 hover:text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+            </svg>
+            <span class="font-medium">Classement</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="menu-item flex items-center gap-3 p-4 text-gray-700 hover:text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"></path>
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+            </svg>
+            <span class="font-medium">Paramètres</span>
+          </a>
+        </li>
+        <li>
+          <a href="#" class="menu-item flex items-center gap-3 p-4 text-gray-700 hover:text-blue-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+            </svg>
+            <span class="font-medium">Déconnexion</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+    
+    <div class="absolute bottom-0 left-0 right-0 p-4 bg-gray-50 border-t border-gray-200">
+      <div class="text-center text-sm text-gray-500">
+        Version 1.2.5 • © 2025 FichesNum
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="w-full max-w-md mx-auto flex-1 px-2 sm:px-0 py-3">
+    <!-- Stats -->
+    <section class="flex gap-2 justify-between mt-3 mb-4 flex-wrap">
+      <div class="bg-white rounded-xl shadow flex-1 min-w-[110px] py-2 px-3 text-blue-600 font-semibold text-center">👥<br><b>235</b> En ligne</div>
+      <div class="bg-white rounded-xl shadow flex-1 min-w-[110px] py-2 px-3 text-blue-600 font-semibold text-center">📄<br><b>52</b> Fiches aujourd’hui</div>
+      <div class="bg-white rounded-xl shadow flex-1 min-w-[110px] py-2 px-3 text-blue-600 font-semibold text-center">💬<br><b>134</b> Commentaires</div>
+    </section>
+    <!-- Feed -->
+    <section aria-label="Mur social des fiches" class="flex flex-col gap-5">
+      <!-- Fiche 1 -->
+      <article tabindex="0" itemscope itemtype="https://schema.org/Article" class="bg-white rounded-2xl shadow px-5 py-4 focus:ring-2 focus:ring-blue-300 transition">
+        <div class="flex items-center gap-3 mb-1">
+          <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Marie MicroFiche" class="w-11 h-11 rounded-full border-2 border-gray-200 object-cover" loading="lazy">
+          <div>
+            <span class="font-bold text-blue-700" itemprop="author">Marie MicroFiche</span><br>
+            <span class="text-xs text-gray-500" itemprop="datePublished">il y a 3 min</span>
+          </div>
+        </div>
+        <div class="font-bold text-lg mb-1 text-gray-900" itemprop="headline">Comment écrire un mail pro (sans prise de tête)</div>
+        <div class="text-gray-700 mb-2" itemprop="description">
+          Pour un mail efficace : sois clair, bref et poli.<br>
+          Bonus : une formule de politesse ne tue personne (même ton boss).
+        </div>
+        <div class="bg-gray-100 rounded-lg pl-3 pr-2 py-2 border-l-4 border-blue-600 text-gray-800 text-sm mb-2">
+          <b>Exemple :</b><br>
+          <em>Bonjour Claire,<br>
+          Peux-tu m’envoyer le rapport avant 15h ?<br>
+          Merci d’avance !<br>
+          Bonne journée,<br>
+          Kiki</em>
+        </div>
+        <div class="bg-blue-50 text-blue-900 rounded-lg px-3 py-2 text-sm font-medium mb-2">
+          Quiz express :  
+          <br>Quelle formule de politesse éviter dans un mail pro ?
+          <br><span>A) Cordialement&nbsp;&nbsp;B) Bisous&nbsp;&nbsp;C) Bien à vous</span>
+        </div>
+        <div class="flex gap-3 mt-1">
+          <button class="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 hover:bg-blue-100 active:bg-blue-200 font-semibold transition like-btn" onclick="toggleLike(this)">
+            👍 J’aime <span class="like-count ml-1">24</span>
+          </button>
+          <button class="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 hover:bg-blue-100 active:bg-blue-200 font-semibold transition" onclick="toggleComments(this)">
+            💬 Commenter
+          </button>
+          <button class="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 hover:bg-green-100 active:bg-green-200 font-semibold transition" onclick="alert('Partage et tes potes deviendront brillants !')">
+            ↗️ Partager
+          </button>
+        </div>
+        <div class="comments mt-2 bg-gray-50 rounded-lg p-3 text-sm text-gray-700 hidden">
+          <b>Paul :</b> Trop utile, j’envoyais toujours “Bisous” à mon patron…<br>
+          <b>Sophie :</b> Merci pour la fiche !<br>
+          <b>Julien :</b> Et pour écrire à sa belle-mère, on fait comment ? 😆
+        </div>
+      </article>
+      <!-- Fiche 2 -->
+      <article tabindex="0" itemscope itemtype="https://schema.org/Article" class="bg-white rounded-2xl shadow px-5 py-4 focus:ring-2 focus:ring-blue-300 transition">
+        <div class="flex items-center gap-3 mb-1">
+          <img src="https://randomuser.me/api/portraits/men/34.jpg" alt="Paul Polyglotte" class="w-11 h-11 rounded-full border-2 border-gray-200 object-cover" loading="lazy">
+          <div>
+            <span class="font-bold text-blue-700" itemprop="author">Paul Polyglotte</span><br>
+            <span class="text-xs text-gray-500" itemprop="datePublished">il y a 1 h</span>
+          </div>
+        </div>
+        <div class="font-bold text-lg mb-1 text-gray-900" itemprop="headline">Dire « bonjour » en 7 langues (sans se tromper)</div>
+        <div class="text-gray-700 mb-2" itemprop="description">
+          Apprends à dire bonjour sans insulter ta belle-mère à l’international.<br>
+          Parfait pour briller en voyage ou au bureau.
+        </div>
+        <div class="bg-gray-100 rounded-lg pl-3 pr-2 py-2 border-l-4 border-blue-600 text-gray-800 text-sm mb-2">
+          <b>Exemples :</b> Hello (Anglais), Hola (Espagnol), Hallo (Allemand), Ciao (Italien), Konnichiwa (Japonais), Salam (Arabe), Jambo (Swahili)
+        </div>
+        <div class="bg-blue-50 text-blue-900 rounded-lg px-3 py-2 text-sm font-medium mb-2">
+          Quiz express :<br>
+          Quel pays dit “Konnichiwa” ?<br>
+          <span>A) Japon&nbsp;&nbsp;B) Brésil&nbsp;&nbsp;C) Russie</span>
+        </div>
+        <div class="flex gap-3 mt-1">
+          <button class="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 hover:bg-blue-100 active:bg-blue-200 font-semibold transition like-btn" onclick="toggleLike(this)">
+            👍 J’aime <span class="like-count ml-1">9</span>
+          </button>
+          <button class="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 hover:bg-blue-100 active:bg-blue-200 font-semibold transition" onclick="toggleComments(this)">
+            💬 Commenter
+          </button>
+          <button class="flex items-center gap-1 px-3 py-1 rounded-full bg-gray-100 border border-gray-200 text-gray-700 hover:bg-green-100 active:bg-green-200 font-semibold transition" onclick="alert('Partage et tu deviens un globe-trotter du cerveau !')">
+            ↗️ Partager
+          </button>
+        </div>
+        <div class="comments mt-2 bg-gray-50 rounded-lg p-3 text-sm text-gray-700 hidden">
+          <b>Amine :</b> J’ai essayé “Hola” au Japon, j’ai eu droit à un regard bizarre…<br>
+          <b>Lucie :</b> J’adore ces fiches !<br>
+          <b>Mamie :</b> Moi j’apprends “Ciao” pour draguer à la pétanque.
+        </div>
+      </article>
+    </section>
+    <!-- Leaderboard -->
+    <section class="mt-8 mb-5" aria-labelledby="top-learners">
+      <h2 class="text-blue-700 font-bold text-base mb-3" id="top-learners">Best Learners 🏆</h2>
+      <div class="flex gap-3 overflow-x-auto pb-2">
+        <div class="bg-white rounded-xl shadow px-5 py-3 min-w-[120px] text-center border border-gray-200">
+          <div class="font-bold text-white bg-blue-600 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">1</div>
+          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Top 1" class="w-8 h-8 rounded-full border-2 border-white mx-auto mb-1">
+          <div class="font-bold text-gray-800">Sophie</div>
+          <div class="text-green-600 font-semibold text-sm">2040 XP</div>
+        </div>
+        <div class="bg-white rounded-xl shadow px-5 py-3 min-w-[120px] text-center border border-gray-200">
+          <div class="font-bold text-yellow-600 bg-yellow-300 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">2</div>
+          <img src="https://randomuser.me/api/portraits/men/36.jpg" alt="Top 2" class="w-8 h-8 rounded-full border-2 border-white mx-auto mb-1">
+          <div class="font-bold text-gray-800">Julien</div>
+          <div class="text-green-600 font-semibold text-sm">1810 XP</div>
+        </div>
+        <div class="bg-white rounded-xl shadow px-5 py-3 min-w-[120px] text-center border border-gray-200">
+          <div class="font-bold text-gray-600 bg-gray-200 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">3</div>
+          <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Top 3" class="w-8 h-8 rounded-full border-2 border-white mx-auto mb-1">
+          <div class="font-bold text-gray-800">Mehdi</div>
+          <div class="text-green-600 font-semibold text-sm">1725 XP</div>
+        </div>
+        <div class="bg-white rounded-xl shadow px-5 py-3 min-w-[120px] text-center border border-gray-200">
+          <div class="font-bold text-orange-800 bg-orange-300 rounded-full w-8 h-8 flex items-center justify-center mx-auto mb-1">4</div>
+          <img src="https://randomuser.me/api/portraits/women/29.jpg" alt="Top 4" class="w-8 h-8 rounded-full border-2 border-white mx-auto mb-1">
+          <div class="font-bold text-gray-800">Clara</div>
+          <div class="text-green-600 font-semibold text-sm">1630 XP</div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <!-- FAB pour ajouter une fiche -->
+  <button class="fixed right-6 bottom-8 w-16 h-16 rounded-full bg-blue-600 hover:bg-green-500 shadow-xl flex items-center justify-center text-white text-3xl z-30 transition-all" aria-label="Nouvelle fiche" onclick="alert('Bientôt, tu pourras créer ta fiche !')">
+    +
+  </button>
+  <footer class="mt-6 mb-4 text-center text-gray-500 text-sm opacity-90">
+    © 2025 FichesNum – L’app micro-learning qui rend tes pauses intelligentes.<br>
+    <span class="text-xs">Fait avec ❤️ et un soupçon de génie (artificiel).</span>
+  </footer>
+  <script>
+    // Menu functionality
+    const menuButton = document.getElementById('menuButton');
+    const closeMenu = document.getElementById('closeMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const sideMenu = document.getElementById('sideMenu');
+    
+    function openMenu() {
+      menuOverlay.classList.add('active');
+      sideMenu.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    
+    function closeMenuFunc() {
+      menuOverlay.classList.remove('active');
+      sideMenu.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+    
+    menuButton.addEventListener('click', openMenu);
+    closeMenu.addEventListener('click', closeMenuFunc);
+    menuOverlay.addEventListener('click', closeMenuFunc);
+    
+    // Like button effect
+    function toggleLike(btn) {
+      btn.classList.add('animated');
+      btn.classList.toggle('bg-blue-600');
+      btn.classList.toggle('text-white');
+      btn.classList.toggle('border-blue-700');
+      let span = btn.querySelector('.like-count');
+      let count = parseInt(span.textContent, 10) || 0;
+      if (btn.classList.contains('bg-blue-600')) span.textContent = count + 1;
+      else span.textContent = count - 1;
+      
+      setTimeout(() => {
+        btn.classList.remove('animated');
+      }, 600);
+    }
+    
+    // Show/hide comments
+    function toggleComments(btn) {
+      let comments = btn.closest('article').querySelector('.comments');
+      comments.classList.toggle('hidden');
+      if (!comments.classList.contains('hidden')) {
+        setTimeout(()=>comments.scrollIntoView({behavior:'smooth', block:'end'}), 100);
       }
     }
-    </script>
     
-    <title>FicheNum - Générateur d'Ultra-Fiches Interactives | IA Pédagogique</title>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="assets/css/openai.css">
-    <link rel="stylesheet" href="assets/css/main.css">
-</head>
-<body>
-    <!-- Particules d'arrière-plan -->
-
-    <!-- Overlay pour la fenêtre de résultat -->
-    <div class="overlay" id="overlay"></div>
-
-    <!-- Toast pour la notification de copie -->
-    <div class="toast" id="toast">Lien copié dans le presse-papiers !</div>
-
-    <!-- Fenêtre de résultat -->
-    <div class="result-window" id="resultWindow">
-        <div class="result-header">
-            <h3 class="result-title">Votre fiche est prête !</h3>
-            <button class="close-result" id="closeResult">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        
-        <div class="result-content">
-            <p>Votre fiche interactive a été générée avec succès ! Voici un aperçu des éléments inclus :</p>
-            
-            <div class="result-features">
-                <div class="result-feature">
-                    <i class="fas fa-check-circle"></i> Texte synthétisé
-                </div>
-                <div class="result-feature">
-                    <i class="fas fa-check-circle"></i> Infographie
-                </div>
-                <div class="result-feature">
-                    <i class="fas fa-check-circle"></i> Audio explicatif
-                </div>
-                <div class="result-feature">
-                    <i class="fas fa-check-circle"></i> Quiz interactif
-                </div>
-                <div class="result-feature">
-                    <i class="fas fa-check-circle"></i> QR-code
-                </div>
-                <div class="result-feature">
-                    <i class="fas fa-check-circle"></i> Partage en un clic
-                </div>
-            </div>
-            
-            <p>Vous pouvez maintenant partager cette fiche avec vos collègues ou étudiants.</p>
-        </div>
-        
-        <div class="share-container">
-            <div class="share-link" id="shareLink">
-                https://fichenum.com/fiche/12345
-            </div>
-            <button class="copy-button" id="copyButton">
-                <i class="fas fa-copy"></i> Copier le lien
-            </button>
-        </div>
-    </div>
-
-    <!-- Header futuriste -->
-    <header>
-    <nav class="navbar navbar-expand-lg openai-header">
-        <div class="container">
-            <a class="navbar-brand" href="#">FicheNum</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto ">
-                    <li class="nav-item"><a class="nav-link " href="#features">Fonctionnalités</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#how-it-works">Comment ça marche</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#use-cases">Cas d'usage</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#pricing">Tarifs</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Connexion</a></li>
-                    <li class="nav-item"><a class="nav-link " href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Inscription</a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    </header>
-
-    <main>
-
-    <!-- Section Héro -->
-    <section class="hero-section">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-lg-8">
-                    <h1 class="hero-title">Ultra-Fiches<br><span style="color: #10a37f;">Interactives</span></h1>
-                    <p class="hero-subtitle">
-                        Transformez n'importe quel contenu en fiche interactive ultra-condensée en moins de 30 secondes. 
-                        Lien, PDF, photo, ou simple question - FicheGPT fait le reste !
-                    </p>
-                    
-                    <!-- Input magique -->
-                    <div class="magic-input-container">
-                        <input type="text" class="magic-input" placeholder="Collez un lien, uploadez un PDF, ou tapez 'Explique-moi le bitcoin'..." id="magicInput">
-                        <button class="magic-button" onclick="generateFiche()">
-                            <i class="fas fa-magic"></i>
-                        </button>
-                    </div>
-
-                    <!-- Types de contenu -->
-                    <div class="content-types">
-                        <div class="content-type" onclick="setInputType('link')">
-                            <i class="fas fa-link"></i>
-                            <div>Lien Web</div>
-                        </div>
-                        <div class="content-type" onclick="setInputType('pdf')">
-                            <i class="fas fa-file-pdf"></i>
-                            <div>PDF</div>
-                        </div>
-                        <div class="content-type" onclick="setInputType('image')">
-                            <i class="fas fa-image"></i>
-                            <div>Image</div>
-                        </div>
-                        <div class="content-type" onclick="setInputType('question')">
-                            <i class="fas fa-question-circle"></i>
-                            <div>Question</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Section Fonctionnalités -->
-    <section id="features" class="features-section">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-4  fw-bold">Pourquoi FicheNum ?</h2>
-                <p class="lead ">L'IA qui révolutionne votre façon d'apprendre</p>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-bolt"></i>
-                        </div>
-                        <h4 class="text-center mb-3">Ultra-Rapide</h4>
-                        <p class="text-center">Moins de 30 secondes pour transformer n'importe quel contenu en fiche interactive complète.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-brain"></i>
-                        </div>
-                        <h4 class="text-center mb-3">IA Maison</h4>
-                        <p class="text-center">FicheGPT, notre IA propriétaire, analyse et synthétise avec une précision chirurgicale.</p>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="feature-card">
-                        <div class="feature-icon">
-                            <i class="fas fa-share-alt"></i>
-                        </div>
-                        <h4 class="text-center mb-3">Partage Universel</h4>
-                        <p class="text-center">QR-code automatique pour partager vos fiches partout, sur tous les supports.</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Timeline Comment ça marche -->
-    <section id="how-it-works" class="py-5">
-        <div class="container">
-            <div class="text-center mb-5">
-                <h2 class="display-4  fw-bold">Comment ça marche ?</h2>
-                <p class="lead ">4 étapes, 30 secondes, résultat magique</p>
-            </div>
-            <div class="timeline">
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h5><i class="fas fa-upload text-primary"></i> 1. Vous balancez</h5>
-                        <p>Lien, PDF, image, ou simple question - tout est bon pour FicheNum !</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h5><i class="fas fa-cogs text-success"></i> 2. FicheGPT analyse</h5>
-                        <p>Notre IA maison décortique, analyse et identifie les points clés essentiels.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h5><i class="fas fa-magic text-warning"></i> 3. Génération magique</h5>
-                        <p>Création automatique : texte + infographie + audio + quiz interactif.</p>
-                    </div>
-                </div>
-                <div class="timeline-item">
-                    <div class="timeline-content">
-                        <h5><i class="fas fa-rocket text-danger"></i> 4. Partage instantané</h5>
-                        <p>QR-code généré, lien de partage prêt - votre fiche est live !</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Section sémantique -->
-    <section id="use-cases" class="semantic-section">
-        <div class="container">
-            <h2 class="text-center mb-5">FicheNum : Votre outil pédagogique ultime</h2>
-            
-            <div class="semantic-grid">
-                <div class="semantic-card">
-                    <h3><i class="fas fa-graduation-cap me-2"></i> Pour les étudiants</h3>
-                    <p>Transformez vos cours et manuels en fiches de révision interactives. Gagnez du temps sur vos études avec des résumés clairs et des quiz d'auto-évaluation.</p>
-                </div>
-                
-                <div class="semantic-card">
-                    <h3><i class="fas fa-chalkboard-teacher me-2"></i> Pour les enseignants</h3>
-                    <p>Créez des supports pédagogiques attrayants en quelques secondes. FichesNum facilite la création de contenus pour tous les niveaux d'apprentissage.</p>
-                </div>
-                
-                <div class="semantic-card">
-                    <h3><i class="fas fa-briefcase me-2"></i> Pour les professionnels</h3>
-                    <p>Transformez vos rapports, présentations et documents complexes en fiches mémo partageables. Idéal pour les formations et le partage de connaissances.</p>
-                </div>
-                
-                <div class="semantic-card">
-                    <h3><i class="fas fa-book-reader me-2"></i> Pour les autodidactes</h3>
-                    <p>Consolidez vos apprentissages en ligne avec des fiches interactives personnalisées. Transformez n'importe quelle ressource web en matériel d'étude efficace.</p>
-                </div>
-            </div>
-            
-            <div class="mt-5">
-                <h3 class="text-center mb-4">Notre technologie</h3>
-                <p class="text-center">FicheNum utilise une combinaison d'IA avancée pour transformer le contenu :</p>
-                <ul class="text-center mt-3" style="list-style: none; padding: 0;">
-                    <li class="mb-2"><i class="fas fa-robot me-2"></i> NLP (Natural Language Processing) pour l'analyse sémantique</li>
-                    <li class="mb-2"><i class="fas fa-chart-pie me-2"></i> Génération automatique d'infographies</li>
-                    <li class="mb-2"><i class="fas fa-microphone-alt me-2"></i> Synthèse vocale pour les résumés audio</li>
-                    <li class="mb-2"><i class="fas fa-brain me-2"></i> Modèles d'apprentissage profond pour l'extraction de connaissances</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <h2 class="display-4  fw-bold mb-4">Prêt à révolutionner votre apprentissage ?</h2>
-            <p class="lead  mb-4">Rejoignez les milliers d'utilisateurs qui ont déjà adopté FicheNum</p>
-            <a href="#" class="neon-button">Commencer gratuitement</a>
-        </div>
-    </section>
-
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <h5>FicheNum</h5>
-                    <p>L'outil ultime pour transformer tout contenu en fiches pédagogiques interactives en quelques secondes.</p>
-                </div>
-                
-                <div class="col-md-2 mb-4">
-                    <h5>Navigation</h5>
-                    <ul class="footer-links">
-                        <li><a href="#">Accueil</a></li>
-                        <li><a href="#features">Fonctionnalités</a></li>
-                        <li><a href="#how-it-works">Comment ça marche</a></li>
-                        <li><a href="#use-cases">Cas d'usage</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-md-3 mb-4">
-                    <h5>Légal</h5>
-                    <ul class="footer-links">
-                        <li><a href="#">Conditions d'utilisation</a></li>
-                        <li><a href="#">Politique de confidentialité</a></li>
-                        <li><a href="#">Mentions légales</a></li>
-                    </ul>
-                </div>
-                
-                <div class="col-md-3 mb-4">
-                    <h5>Contact</h5>
-                    <ul class="footer-links">
-                        <li><a href="mailto:contact@fichenum.com"><i class="fas fa-envelope me-2"></i> contact@fichenum.com</a></li>
-                        <li><a href="#"><i class="fas fa-map-marker-alt me-2"></i> Paris, France</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <div class="copyright">
-                <p>&copy; 2023 FicheNum. Tous droits réservés.</p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Modal Connexion -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Connexion</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="loginForm" action="#" method="post">
-                        <div class="mb-3">
-                            <label for="loginEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="loginEmail" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="loginPassword" class="form-label">Mot de passe</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="loginPassword" name="password" required>
-                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#loginPassword">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Se connecter</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Inscription -->
-    <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="registerModalLabel">Inscription</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="registerForm" action="#" method="post">
-                        <div class="mb-3">
-                            <label for="registerName" class="form-label">Nom</label>
-                            <input type="text" class="form-control" id="registerName" name="name" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="registerEmail" name="email" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="registerPassword" class="form-label">Mot de passe</label>
-                            <div class="input-group">
-                                <input type="password" class="form-control" id="registerPassword" name="password" required>
-                                <button class="btn btn-outline-secondary toggle-password" type="button" data-target="#registerPassword">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary w-100">Créer mon compte</button>
-                    </form>
-                </div>
-            </div>
-        </div>
+    // Close menu when pressing escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && sideMenu.classList.contains('active')) {
+        closeMenuFunc();
+      }
+    });
+  </script>
+</body>
+</html>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
