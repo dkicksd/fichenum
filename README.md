@@ -26,3 +26,7 @@ Then open `http://localhost:8000` in your browser to access FicheNum.
 - **Universal sharing** – each sheet comes with a QR code and a direct link ready to distribute.
 
 FicheNum aims to simplify content digestion for students, teachers and professionals alike. Feel free to adapt the code to your own needs.
+
+## User registration
+
+The `register.php` page lets visitors create an account. It checks whether the email already exists, stores a verification token and sends a confirmation link using PHP's `mail()` function. Following the link triggers `verify.php` which marks the user as verified.
