@@ -10,6 +10,7 @@ $role = $_SESSION['role'] ?? null;
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fichesnum - IA mobile et durable</title>
   <meta name="theme-color" content="#1a3c2c">
+  <link rel="icon" href="/assets/images/icon-512.png">
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -25,7 +26,7 @@ $role = $_SESSION['role'] ?? null;
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container">
     <a class="navbar-brand fw-bold d-flex align-items-center" href="#">
-      <i class="fas fa-book-open me-2"></i>Fichesnum
+      <img src="/assets/images/icon-512.png" alt="Fichesnum" class="logo me-2">Fichesnum
     </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu">
       <span class="navbar-toggler-icon"></span>
@@ -276,7 +277,7 @@ $role = $_SESSION['role'] ?? null;
     <div class="row">
       <div class="col-lg-4 mb-4 mb-lg-0">
         <h4 class="mb-3">
-          <i class="fas fa-book-open me-2"></i>Fichesnum
+          <img src="/assets/images/icon-512.png" alt="Fichesnum" class="logo me-2">Fichesnum
         </h4>
         <p>Apprendre efficacement, partout, tout en respectant notre planète.</p>
         <div class="social-icons mt-3">
