@@ -1,3 +1,7 @@
+<?php
+session_start();
+$username = $_SESSION["username"] ?? null;
+?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -32,10 +36,15 @@
         <li class="nav-item"><a class="nav-link" href="#eco">Écologie</a></li>
         <li class="nav-item"><a class="nav-link" href="#testimonials">Témoignages</a></li>
       </ul>
-      <div class="ms-lg-3 mt-3 mt-lg-0">
-        <a href="/login.php" class="btn btn-sm btn-outline-light">Connexion</a>
-        <a href="/register.php" class="btn btn-sm btn-primary ms-2">Inscription</a>
-      </div>
+        <div class="ms-lg-3 mt-3 mt-lg-0">
+<?php if ($username): ?>
+          <span class="navbar-text me-3">Bonjour, <?= htmlspecialchars($username) ?></span>
+          <a href="/logout.php" class="btn btn-sm btn-outline-light">Déconnexion</a>
+<?php else: ?>
+          <a href="/login.php" class="btn btn-sm btn-outline-light">Connexion</a>
+          <a href="/register.php" class="btn btn-sm btn-primary ms-2">Inscription</a>
+<?php endif; ?>
+        </div>
     </div>
   </div>
 </nav>
@@ -45,6 +54,9 @@
     <div class="row justify-content-center">
       <div class="col-lg-8">
         <h1>Fiches IA. Mobile. Durable.</h1>
+<?php if ($username): ?>
+          <p class="lead">Bienvenue, <?= htmlspecialchars($username) ?>.</p>
+<?php endif; ?>
         <p>Générez vos fiches pédagogiques où que vous soyez, sans gaspiller d'énergie ni compromettre la qualité.</p>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
           <a href="/register.php" class="btn btn-primary btn-lg px-4 py-2">
