@@ -59,9 +59,11 @@ $username = $_SESSION["username"] ?? null;
 <?php endif; ?>
         <p>Générez vos fiches pédagogiques où que vous soyez, sans gaspiller d'énergie ni compromettre la qualité.</p>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
+<?php if (!$username): ?>
           <a href="/register.php" class="btn btn-primary btn-lg px-4 py-2">
             <i class="fas fa-user-plus me-2"></i>Créer un compte
           </a>
+<?php endif; ?>
           <a href="#features" class="btn btn-outline-light btn-lg px-4 py-2">
             <i class="fas fa-compass me-2"></i>Découvrir
           </a>
@@ -227,9 +229,11 @@ $username = $_SESSION["username"] ?? null;
       <a href="/explore.php" class="btn btn-primary btn-lg px-4 py-2">
         <i class="fas fa-binoculars me-2"></i>Explorer les fiches
       </a>
+<?php if (!$username): ?>
       <a href="/register.php" class="btn btn-outline-primary btn-lg px-4 py-2">
         <i class="fas fa-user-plus me-2"></i>Créer un compte gratuit
       </a>
+<?php endif; ?>
     </div>
     
     <div class="mt-5">
