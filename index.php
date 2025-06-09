@@ -68,6 +68,10 @@ $role = $_SESSION['role'] ?? null;
           <a href="/register.php" class="btn btn-primary btn-lg px-4 py-2">
             <i class="fas fa-user-plus me-2"></i>Créer un compte
           </a>
+<?php else: ?>
+          <a href="/create_fiche.php" class="btn btn-primary btn-lg px-4 py-2">
+            <i class="fas fa-magic me-2"></i>Nouvelle fiche
+          </a>
 <?php endif; ?>
           <a href="#features" class="btn btn-outline-light btn-lg px-4 py-2">
             <i class="fas fa-compass me-2"></i>Découvrir
