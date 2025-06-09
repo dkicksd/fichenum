@@ -89,7 +89,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <?php if ($message): ?>
     <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
   <?php endif; ?>
+
+  <div class="d-flex gap-3 mb-4">
+    <div class="plan-card flex-fill" data-plan="free">
+      <h2 class="h5 mb-1">Formule gratuite</h2>
+      <p class="mb-0">Profitez des fonctionnalités de base.</p>
+    </div>
+    <div class="plan-card flex-fill" data-plan="premium">
+      <h2 class="h5 mb-1">Formule premium</h2>
+      <p class="mb-0">Toutes les options pour 4,90&nbsp;&euro;.</p>
+    </div>
+  </div>
+
+  <div id="register-form" style="display:none">
   <form method="post" novalidate>
+    <input type="hidden" name="plan" id="plan-input" value="">
     <div class="mb-3">
       <label for="username" class="form-label">Pseudo</label>
       <input type="text" class="form-control" id="username" name="username" required>
@@ -112,17 +126,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <i class="fas fa-eye-slash" id="eye-confirm"></i>
       </span>
     </div>
-    <div class="mb-3">
-      <label class="form-label d-block">Formule</label>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="plan" id="plan-free" value="free" checked>
-        <label class="form-check-label" for="plan-free">Gratuite</label>
-      </div>
-      <div class="form-check form-check-inline">
-        <input class="form-check-input" type="radio" name="plan" id="plan-premium" value="premium">
-        <label class="form-check-label" for="plan-premium">Payante</label>
-      </div>
-    </div>
     <button type="submit" class="btn btn-primary">S'inscrire</button>
   </form>
 </div>
@@ -142,6 +145,17 @@ function togglePassword(fieldId) {
     eye.classList.add('fa-eye-slash');
   }
 }
+
+document.querySelectorAll('.plan-card').forEach(card => {
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+    document.getElementById('plan-input').value = card.dataset.plan;
+    const container = document.getElementById('register-form');
+    container.style.display = 'block';
+    container.scrollIntoView({behavior: 'smooth'});
+  });
+});
 </script>
 </body>
 </html>
