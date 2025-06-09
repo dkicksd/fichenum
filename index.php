@@ -37,6 +37,9 @@ $role = $_SESSION['role'] ?? null;
         <li class="nav-item"><a class="nav-link" href="#explorer">Explorer</a></li>
         <li class="nav-item"><a class="nav-link" href="#eco">Écologie</a></li>
         <li class="nav-item"><a class="nav-link" href="#testimonials">Témoignages</a></li>
+<?php if ($username): ?>
+        <li class="nav-item"><a class="nav-link" href="/dashboard.php">Mes fiches</a></li>
+<?php endif; ?>
       </ul>
         <div class="ms-lg-3 mt-3 mt-lg-0">
 <?php if ($username): ?>
