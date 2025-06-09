@@ -18,5 +18,9 @@ try {
     die('Erreur de connexion à la base de données : ' . $e->getMessage());
 }
 
-
+// --- CLÉ API OPENAI ---
+// Remplace "SK-XXXXX" par ta vraie clé.  
+// Pour plus de sécurité, tu peux la stocker en variable d’environnement et utiliser getenv('OPENAI_API_KEY').
+define('OPENAI_API_KEY', '');
+define('MAX_DEMO_ATTEMPTS', 2);
 ?>
