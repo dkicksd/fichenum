@@ -21,6 +21,14 @@ if (!$fiche) {
     exit;
 }
 
+// Determine if the current user already liked this fiche
+$userLiked = false;
+if (isset($_SESSION['user_id'])) {
+    $likeStmt = $pdo->prepare('SELECT 1 FROM nfn_fiche_likes WHERE user_id = ? AND fiche_id = ?');
+    $likeStmt->execute([$_SESSION['user_id'], $id]);
+    $userLiked = (bool)$likeStmt->fetchColumn();
+}
+
 $pdo->prepare('UPDATE nfn_fiches SET views = views + 1 WHERE id = ?')->execute([$id]);
 $fiche['views']++;
 ?>
@@ -64,7 +72,7 @@ $fiche['views']++;
   </div>
 
   <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
-    <button id="like-btn" class="btn btn-sm btn-outline-primary">
+    <button id="like-btn" class="btn btn-sm <?= $userLiked ? 'btn-primary active' : 'btn-outline-primary' ?>"<?= $userLiked ? ' aria-pressed="true"' : '' ?>>
       <i class="fas fa-thumbs-up me-1"></i><span id="like-count"><?= (int)$fiche['likes'] ?></span>
     </button>
     <button id="share-btn" class="btn btn-sm btn-outline-secondary">
@@ -81,10 +89,18 @@ $fiche['views']++;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-document.getElementById('like-btn').addEventListener('click', () => {
+const likeBtn = document.getElementById('like-btn');
+likeBtn.addEventListener('click', () => {
   fetch('like.php?id=<?= $fiche['id'] ?>')
     .then(r => r.json())
-    .then(data => { if(data.success) document.getElementById('like-count').textContent = data.likes; });
+    .then(data => {
+      if (data.success) {
+        document.getElementById('like-count').textContent = data.likes;
+        likeBtn.classList.remove('btn-outline-primary');
+        likeBtn.classList.add('btn-primary','active');
+        likeBtn.setAttribute('aria-pressed', 'true');
+      }
+    });
 });
 
 document.getElementById('share-btn').addEventListener('click', () => {
