@@ -88,11 +88,24 @@ document.getElementById('like-btn').addEventListener('click', () => {
 });
 
 document.getElementById('share-btn').addEventListener('click', () => {
-  navigator.clipboard.writeText(window.location.href).then(() => {
-    fetch('share.php?id=<?= $fiche['id'] ?>')
-      .then(r => r.json())
-      .then(data => { if(data.success) document.getElementById('share-count').textContent = data.shares; });
-  });
+  const url = window.location.href;
+  if (navigator.share) {
+    navigator.share({ url })
+      .then(() => {
+        fetch('share.php?id=<?= $fiche['id'] ?>')
+          .then(r => r.json())
+          .then(data => { if(data.success) document.getElementById('share-count').textContent = data.shares; });
+      })
+      .catch(() => alert('Échec du partage.'));
+  } else {
+    navigator.clipboard.writeText(url)
+      .then(() => {
+        fetch('share.php?id=<?= $fiche['id'] ?>')
+          .then(r => r.json())
+          .then(data => { if(data.success) document.getElementById('share-count').textContent = data.shares; });
+      })
+      .catch(() => alert('Impossible de copier le lien.'));
+  }
 });
 </script>
 </body>
