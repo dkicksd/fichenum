@@ -2,6 +2,7 @@
 session_start();
 $username = $_SESSION["username"] ?? null;
 $role = $_SESSION['role'] ?? null;
+$plan = $_SESSION['plan'] ?? null;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -64,6 +65,9 @@ $role = $_SESSION['role'] ?? null;
         <h1>Fiches IA. Mobile. Durable.</h1>
 <?php if ($username): ?>
           <p class="lead">Bienvenue, <?= htmlspecialchars($username) ?>.</p>
+          <?php if ($plan): ?>
+          <p class="text-muted">Formule : <?= htmlspecialchars($plan) ?></p>
+          <?php endif; ?>
 <?php endif; ?>
         <p>Générez vos fiches pédagogiques où que vous soyez, sans gaspiller d'énergie ni compromettre la qualité.</p>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">

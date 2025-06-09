@@ -10,13 +10,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!$email || !$password) {
         $message = "Email et mot de passe requis.";
     } else {
-        $stmt = $pdo->prepare('SELECT id, username, password, role FROM nfn_users WHERE email = ? AND verified = 1');
+        $stmt = $pdo->prepare('SELECT id, username, password, role, plan FROM nfn_users WHERE email = ? AND verified = 1');
         $stmt->execute([$email]);
         $user = $stmt->fetch();
         if ($user && password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['username'] = $user['username'];
             $_SESSION['role'] = $user['role'];
+            $_SESSION['plan'] = $user['plan'];
             header('Location: /index.php');
             exit;
         } else {
