@@ -161,6 +161,7 @@ EOT;
       <img src="/assets/images/icon-512.png" alt="Fichesnum" class="me-2" style="height: 32px;"> Fichesnum
     </a>
     <div class="ms-auto">
+      <a href="/dashboard.php" class="btn btn-sm btn-primary me-2">Mes fiches</a>
       <a href="/logout.php" class="btn btn-sm btn-outline-light">Déconnexion</a>
     </div>
   </div>
