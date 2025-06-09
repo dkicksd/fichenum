@@ -7,6 +7,13 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
+// Nombre de fiches déjà créées par l'utilisateur
+$stmt = $pdo->prepare('SELECT COUNT(*) FROM nfn_fiches WHERE user_id = ?');
+$stmt->execute([$_SESSION['user_id']]);
+$usedCount = (int)$stmt->fetchColumn();
+$remaining = MAX_DEMO_ATTEMPTS - $usedCount;
+if ($remaining < 0) $remaining = 0;
+
 $message = '';
 $fiche = null;
 
@@ -15,11 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($input === '') {
         $message = "Veuillez saisir un sujet pour générer une fiche.";
     } else {
-        $stmt = $pdo->prepare('SELECT COUNT(*) FROM nfn_fiches WHERE user_id = ?');
-        $stmt->execute([$_SESSION['user_id']]);
-        $count = (int)$stmt->fetchColumn();
-
-        if ($count >= MAX_DEMO_ATTEMPTS) {
+        if ($remaining <= 0) {
             $message = "Limite d'essai gratuite atteinte.";
         } else {
             $ficheData = generateFiche($input);
@@ -39,6 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'text' => $ficheData['fiche'],
                     'quiz' => $quiz
                 ];
+                $remaining--;
             }
         }
     }
@@ -166,12 +170,16 @@ EOT;
     <div class="alert alert-warning"><?= htmlspecialchars($message) ?></div>
   <?php endif; ?>
 
-  <form method="post">
+  <form method="post" id="fiche-form">
     <div class="mb-3">
       <label for="content" class="form-label">Sujet ou question</label>
       <textarea class="form-control" id="content" name="content" rows="3" required></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Générer la fiche</button>
+    <div id="progress-container" class="progress mt-3 d-none" style="height:20px;">
+      <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:0%"></div>
+    </div>
+    <p class="mt-2 text-muted">Fiches restantes : <?= $remaining ?></p>
   </form>
 
   <?php if (!empty($fiche)): ?>
@@ -192,5 +200,42 @@ EOT;
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const form = document.getElementById('fiche-form');
+  const progressContainer = document.getElementById('progress-container');
+  const progressBar = document.getElementById('progress-bar');
+
+  if (form) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      progressContainer.classList.remove('d-none');
+      progressBar.style.width = '0%';
+      let width = 0;
+      const interval = setInterval(() => {
+        if (width < 95) {
+          width += 5;
+          progressBar.style.width = width + '%';
+        }
+      }, 500);
+
+      const formData = new FormData(form);
+      try {
+        const response = await fetch('create_fiche.php', { method: 'POST', body: formData });
+        const html = await response.text();
+        clearInterval(interval);
+        progressBar.style.width = '100%';
+        document.open();
+        document.write(html);
+        document.close();
+      } catch (err) {
+        clearInterval(interval);
+        progressBar.classList.add('bg-danger');
+        progressBar.style.width = '100%';
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
