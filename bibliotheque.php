@@ -2,8 +2,10 @@
 session_start();
 require_once 'config.php';
 
-// Récupérer toutes les fiches et les catégories distinctes
-$stmt = $pdo->query('SELECT id, titre, categorie FROM nfn_fiches ORDER BY created_at ASC');
+// Récupérer toutes les fiches et les catégories distinctes avec les compteurs
+$stmt = $pdo->query(
+    'SELECT id, titre, categorie, views, likes, shares FROM nfn_fiches ORDER BY created_at ASC'
+);
 $fiches = $stmt->fetchAll();
 $catsStmt = $pdo->query('SELECT DISTINCT categorie FROM nfn_fiches ORDER BY categorie');
 $categories = $catsStmt->fetchAll(PDO::FETCH_COLUMN);
@@ -74,6 +76,11 @@ $role = $_SESSION['role'] ?? null;
           <div class="fiche-card position-relative h-100 p-3" data-title="<?= strtolower(htmlspecialchars($fiche['titre'])) ?>" data-category="<?= htmlspecialchars($fiche['categorie']) ?>">
             <h5 class="fw-semibold mb-1"><?= htmlspecialchars($fiche['titre']) ?></h5>
             <p class="text-muted mb-2"><?= htmlspecialchars($fiche['categorie']) ?></p>
+            <div class="d-flex gap-3 small text-muted mb-2 fiche-stats">
+                <div><i class="fas fa-eye me-1"></i><?= (int)$fiche['views'] ?></div>
+                <div><i class="fas fa-thumbs-up me-1"></i><?= (int)$fiche['likes'] ?></div>
+                <div><i class="fas fa-share me-1"></i><?= (int)$fiche['shares'] ?></div>
+            </div>
             <a href="/fiche.php?id=<?= $fiche['id'] ?>" class="stretched-link"></a>
           </div>
         </div>

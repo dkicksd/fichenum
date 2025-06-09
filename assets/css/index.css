@@ -277,6 +277,12 @@
 .ebook-content p {
   margin-bottom: 1em;
 }
+
+.fiche-stats {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
     /* Contraste vérifié */
     /* Toutes les combinaisons texte/fond respectent WCAG AA au minimum */
     /* La plupart respectent WCAG AAA */
