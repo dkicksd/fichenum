@@ -9,6 +9,7 @@ Generated sheets are stored using Markdown syntax which is converted to HTML on 
 1. Clone this repository.
 2. Update the database credentials in `config.php` if needed. The application expects a MySQL database and uses PHP PDO.
 3. Make sure you have PHP 8 or later installed with the PDO MySQL extension.
+4. Download [dompdf](https://github.com/dompdf/dompdf) and place the `dompdf-master` directory at the project root (or install it via Composer).
 
 ## Running locally
 
