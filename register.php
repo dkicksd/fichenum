@@ -7,7 +7,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $username = trim($_POST['username'] ?? '');
     $password = $_POST['password'] ?? '';
-    $confirm = $_POST['confirm'] ?? '';
+    $confirm  = $_POST['confirm'] ?? '';
+    $plan     = $_POST['plan'] ?? 'free';
+    $plan     = ($plan === 'premium') ? 'premium' : 'free';
 
     if (!$email || !$username || !$password || !$confirm) {
         $message = "Tous les champs sont obligatoires.";
@@ -23,8 +25,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $token = bin2hex(random_bytes(16));
 
             $role = 'user';
-            $stmt = $pdo->prepare('INSERT INTO nfn_users (email, password, username, verify_token, verified, role) VALUES (?, ?, ?, ?, 0, ?)');
-            $stmt->execute([$email, $hash, $username, $token, $role]);
+            $stmt = $pdo->prepare('INSERT INTO nfn_users (email, password, username, verify_token, verified, role, plan) VALUES (?, ?, ?, ?, 0, ?, ?)');
+            $stmt->execute([$email, $hash, $username, $token, $role, $plan]);
 
             $domain = $_SERVER['HTTP_HOST'];
             $verifyLink = 'http://' . $domain . '/verify.php?token=' . $token;
@@ -109,6 +111,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('confirm')">
         <i class="fas fa-eye-slash" id="eye-confirm"></i>
       </span>
+    </div>
+    <div class="mb-3">
+      <label class="form-label d-block">Formule</label>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="plan" id="plan-free" value="free" checked>
+        <label class="form-check-label" for="plan-free">Gratuite</label>
+      </div>
+      <div class="form-check form-check-inline">
+        <input class="form-check-input" type="radio" name="plan" id="plan-premium" value="premium">
+        <label class="form-check-label" for="plan-premium">Payante</label>
+      </div>
     </div>
     <button type="submit" class="btn btn-primary">S'inscrire</button>
   </form>
