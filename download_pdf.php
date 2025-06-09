@@ -36,10 +36,15 @@ function generateSimplePdf($title, $text) {
     $parts[1] = "<< /Type /Catalog /Pages 2 0 R >>";
     $parts[2] = "<< /Type /Pages /Kids [3 0 R] /Count 1 >>";
     $parts[3] = "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>";
+
+    // Convert title to a PDF-friendly encoding
+    $title = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', $title);
+
     $content = 'BT /F1 16 Tf 50 750 Td (' . pdfEscape($title) . ') Tj';
     $y = 720;
     foreach (explode("\n", $text) as $line) {
-        $content .= " 50 $y Td (" . pdfEscape(trim($line)) . ") Tj";
+        $line = iconv('UTF-8', 'ISO-8859-1//TRANSLIT', trim($line));
+        $content .= " 1 0 0 1 50 $y Tm(" . pdfEscape($line) . ") Tj";
         $y -= 14;
     }
     $content .= ' ET';
