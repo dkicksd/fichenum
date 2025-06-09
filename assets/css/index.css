@@ -227,7 +227,22 @@
       background: var(--primary-500);
       transform: translateY(-3px);
     }
-    
+    .fiche-content {
+  background-color: var(--neutral-50);
+  border: 1px solid var(--neutral-300);
+  border-radius: 8px;
+  padding: 1rem;
+  font-family: monospace;
+  white-space: pre-wrap;
+}
+
+.quiz-content {
+  background-color: var(--neutral-50);
+  border: 1px solid var(--neutral-300);
+  border-radius: 8px;
+  padding: 1rem;
+  white-space: pre-wrap;
+}
     /* Contraste vérifié */
     /* Toutes les combinaisons texte/fond respectent WCAG AA au minimum */
     /* La plupart respectent WCAG AAA */
