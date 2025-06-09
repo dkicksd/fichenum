@@ -36,3 +36,16 @@ The `register.php` page lets visitors create an account. It checks whether the e
 ## Admin dashboard
 
 Users with the `admin` role can access `/admin/dashboard.php` after logging in. The navigation bar on the home page shows a Dashboard link for admins.
+
+## Likes tracking
+
+Likes are stored in a dedicated table to prevent duplicates. Create the table
+with the SQL script located at `sql/nfn_fiche_likes.sql`:
+
+```sql
+CREATE TABLE nfn_fiche_likes (
+  user_id INT NOT NULL,
+  fiche_id INT NOT NULL,
+  PRIMARY KEY(user_id, fiche_id)
+);
+```
