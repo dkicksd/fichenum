@@ -2,6 +2,8 @@
 
 FicheNum is a lightweight PHP application that turns any content into an interactive learning sheet. Give it a link, a PDF, an image or a question and FicheNum generates a concise "ultra-sheet" that includes text summaries, infographics, audio synthesis and even a quiz. Everything can be shared instantly via a generated QR code.
 
+Generated sheets are stored using Markdown syntax which is converted to HTML on the fly with the [Parsedown](https://parsedown.org) library. This keeps the raw content easy to edit while displaying a clean, ebook-style layout in the browser.
+
 ## Setup
 
 1. Clone this repository.

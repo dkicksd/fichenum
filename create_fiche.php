@@ -1,6 +1,10 @@
 <?php
 session_start();
 require_once 'config.php';
+require_once 'Parsedown.php';
+
+$parsedown = new Parsedown();
+$parsedown->setSafeMode(true);
 
 if (!isset($_SESSION['user_id'])) {
     header('Location: /login.php');
@@ -186,14 +190,14 @@ EOT;
     <hr>
     <h3><?= htmlspecialchars($fiche['title']) ?> <small class="text-muted">(<?= htmlspecialchars($fiche['category']) ?>)</small></h3>
 
-    <div class="bg-light border rounded p-3" style="white-space: pre-wrap; font-family: monospace;">
-      <?= nl2br(htmlspecialchars($fiche['text'])) ?>
+    <div class="ebook-content fiche-content">
+      <?= $parsedown->text($fiche['text']) ?>
     </div>
 
     <button onclick="speechSynthesis.speak(new SpeechSynthesisUtterance(<?= json_encode($fiche['text']) ?>))" class="btn btn-secondary mt-3">🔊 Lire à voix haute</button>
 
     <h4 class="mt-4">Quiz</h4>
-    <div class="bg-light border rounded p-3" style="white-space: pre-wrap;">
+    <div class="quiz-content">
       <?= nl2br(htmlspecialchars($fiche['quiz'])) ?>
     </div>
   <?php endif; ?>
