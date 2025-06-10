@@ -77,9 +77,9 @@ $role = $_SESSION['role'] ?? null;
             <h5 class="fw-semibold mb-1"><?= htmlspecialchars($fiche['titre']) ?></h5>
             <p class="text-muted mb-2"><?= htmlspecialchars($fiche['categorie']) ?></p>
             <div class="d-flex gap-3 small text-muted mb-2 fiche-stats">
-                <div><i class="fas fa-eye me-1"></i><?= (int)$fiche['views'] ?></div>
-                <div><i class="fas fa-thumbs-up me-1"></i><?= (int)$fiche['likes'] ?></div>
-                <div><i class="fas fa-share me-1"></i><?= (int)$fiche['shares'] ?></div>
+                <div><i class="fas fa-eye me-1" aria-hidden="true"></i><?= (int)$fiche['views'] ?></div>
+                <div><i class="fas fa-thumbs-up me-1" aria-hidden="true"></i><?= (int)$fiche['likes'] ?></div>
+                <div><i class="fas fa-share me-1" aria-hidden="true"></i><?= (int)$fiche['shares'] ?></div>
             </div>
             <a href="/fiche.php?id=<?= $fiche['id'] ?>" class="stretched-link"></a>
           </div>

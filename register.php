@@ -115,15 +115,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="mb-3 position-relative">
       <label for="password" class="form-label">Mot de passe</label>
       <input type="password" class="form-control" id="password" name="password" required>
-      <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('password')">
-        <i class="fas fa-eye-slash" id="eye-password"></i>
+      <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('password')" aria-label="Afficher le mot de passe">
+        <i class="fas fa-eye-slash" id="eye-password" aria-hidden="true"></i>
       </span>
     </div>
     <div class="mb-3 position-relative">
       <label for="confirm" class="form-label">Confirmer le mot de passe</label>
       <input type="password" class="form-control" id="confirm" name="confirm" required>
-      <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('confirm')">
-        <i class="fas fa-eye-slash" id="eye-confirm"></i>
+      <span class="position-absolute top-50 end-0 translate-middle-y me-3" onclick="togglePassword('confirm')" aria-label="Afficher le mot de passe">
+        <i class="fas fa-eye-slash" id="eye-confirm" aria-hidden="true"></i>
       </span>
     </div>
     <button type="submit" class="btn btn-primary">S'inscrire</button>
@@ -135,14 +135,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 function togglePassword(fieldId) {
   const field = document.getElementById(fieldId);
   const eye = document.getElementById('eye-' + fieldId);
+  const toggle = eye.parentElement;
   if (field.type === 'password') {
     field.type = 'text';
     eye.classList.remove('fa-eye-slash');
     eye.classList.add('fa-eye');
+    toggle.setAttribute('aria-label', 'Masquer le mot de passe');
   } else {
     field.type = 'password';
     eye.classList.remove('fa-eye');
     eye.classList.add('fa-eye-slash');
+    toggle.setAttribute('aria-label', 'Afficher le mot de passe');
   }
 }
 
