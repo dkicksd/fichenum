@@ -245,7 +245,7 @@ $plan = $_SESSION['plan'] ?? null;
     </div>
     
     <div class="d-flex flex-wrap justify-content-center gap-3">
-      <a href="/explore.php" class="btn btn-primary btn-lg px-4 py-2">
+      <a href="/bibliotheque.php" class="btn btn-primary btn-lg px-4 py-2">
         <i class="fas fa-binoculars me-2" aria-hidden="true"></i>Explorer les fiches
       </a>
 <?php if (!$username): ?>
