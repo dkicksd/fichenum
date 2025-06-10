@@ -26,6 +26,7 @@ Then open `http://localhost:8000` in your browser to access FicheNum.
 - **Proprietary AI (FicheGPT)** – analyzes and condenses information with high precision.
 - **Automatic assets** – generates text summaries, infographics, audio and quizzes.
 - **Universal sharing** – each sheet comes with a QR code and a direct link ready to distribute.
+- **Single-word categories** – each generated sheet is tagged with a concise one-word category.
 
 FicheNum aims to simplify content digestion for students, teachers and professionals alike. Feel free to adapt the code to your own needs.
 

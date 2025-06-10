@@ -99,13 +99,13 @@ Tu es un expert en pédagogie et en écriture de contenus éducatifs. L'utilisat
 
 Génère une fiche professionnelle ultra complète avec ces éléments :
 1. Un **titre pertinent et vendeur** (en majuscules)
-2. Une **catégorie** adaptée au sujet (ex: Cuisine, Physique, Productivité...)
+2. Une **catégorie** adaptée au sujet en **un seul mot** (ex: Cuisine, Physique, Productivité...)
 3. Un **contenu pédagogique** complet sous forme de mini-ebook en Markdown, structuré en chapitres avec astuce, checklist, résumé, etc.
 
 Réponds uniquement dans ce format :
 ---
 TITLE: <titre en majuscule sans balise>
-CATEGORY: <catégorie sans balise>
+CATEGORY: <catégorie en un mot sans balise>
 FICHE:
 <fichier markdown sans balise code>
 ---
@@ -133,9 +133,11 @@ EOT;
     $content = $result['choices'][0]['message']['content'] ?? '';
 
     if (preg_match('/TITLE: (.+?)\nCATEGORY: (.+?)\nFICHE:\n(.+)/s', $content, $matches)) {
+        $cat = trim($matches[2]);
+        $cat = preg_split('/\s+/', $cat)[0]; // un seul mot maximum
         return [
             'title' => trim($matches[1]),
-            'category' => trim($matches[2]),
+            'category' => $cat,
             'fiche' => trim($matches[3])
         ];
     }
