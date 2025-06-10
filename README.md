@@ -35,6 +35,8 @@ The `register.php` page lets visitors create an account. It checks whether the e
 
 During registration users can now choose between a **free** or **premium** plan. The selected plan is saved in the new `plan` column of the `nfn_users` table. Apply the SQL script `sql/add_plan_to_nfn_users.sql` to add this column if upgrading from an earlier version.
 
+For free accounts the generation of learning sheets is limited to **one per day** and **three per week**.
+
 ## Admin dashboard
 
 Users with the `admin` role can access `/admin/dashboard.php` after logging in. The navigation bar on the home page shows a Dashboard link for admins.

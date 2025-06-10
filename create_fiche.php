@@ -11,12 +11,26 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Nombre de fiches déjà créées par l'utilisateur
-$stmt = $pdo->prepare('SELECT COUNT(*) FROM nfn_fiches WHERE user_id = ?');
-$stmt->execute([$_SESSION['user_id']]);
-$usedCount = (int)$stmt->fetchColumn();
-$remaining = MAX_DEMO_ATTEMPTS - $usedCount;
-if ($remaining < 0) $remaining = 0;
+// Gestion des limites de génération pour les comptes gratuits
+$plan = $_SESSION['plan'] ?? 'free';
+$remaining = '∞';
+$dayCount = 0;
+$weekCount = 0;
+
+if ($plan === 'free') {
+    // Fiches créées aujourd'hui
+    $dayStmt = $pdo->prepare('SELECT COUNT(*) FROM nfn_fiches WHERE user_id = ? AND created_at >= CURDATE()');
+    $dayStmt->execute([$_SESSION['user_id']]);
+    $dayCount = (int)$dayStmt->fetchColumn();
+
+    // Fiches créées sur les 7 derniers jours
+    $weekStmt = $pdo->prepare('SELECT COUNT(*) FROM nfn_fiches WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)');
+    $weekStmt->execute([$_SESSION['user_id']]);
+    $weekCount = (int)$weekStmt->fetchColumn();
+
+    $remaining = 3 - $weekCount;
+    if ($remaining < 0) $remaining = 0;
+}
 
 $message = '';
 $fiche = null;
@@ -26,15 +40,41 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($input === '') {
         $message = "Veuillez saisir un sujet pour générer une fiche.";
     } else {
-        if ($remaining <= 0) {
-            $message = "Limite d'essai gratuite atteinte.";
+        if ($plan === 'free') {
+            if ($dayCount >= 1) {
+                $message = "Vous avez déjà généré une fiche aujourd\'hui. Réessayez demain.";
+            } elseif ($weekCount >= 3) {
+                $message = "Vous avez atteint la limite de 3 fiches cette semaine.";
+            } else {
+                $ficheData = generateFiche($input);
+                if (!$ficheData || empty($ficheData['fiche']) || empty($ficheData['title']) || empty($ficheData['category'])) {
+                    $message = "Erreur lors de la génération de la fiche.";
+                } else {
+                    $quiz = generateQuiz($ficheData['fiche']);
+
+                    $stmt = $pdo->prepare('INSERT INTO nfn_fiches (user_id, input, titre, categorie, fiche_text, quiz, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())');
+                    $stmt->execute([
+                        $_SESSION['user_id'], $input, $ficheData['title'], $ficheData['category'], $ficheData['fiche'], json_encode($quiz)
+                    ]);
+
+                    $fiche = [
+                        'title' => $ficheData['title'],
+                        'category' => $ficheData['category'],
+                        'text' => $ficheData['fiche'],
+                        'quiz' => $quiz
+                    ];
+                    $weekCount++;
+                    $dayCount++;
+                    $remaining = max(3 - $weekCount, 0);
+                }
+            }
         } else {
             $ficheData = generateFiche($input);
             if (!$ficheData || empty($ficheData['fiche']) || empty($ficheData['title']) || empty($ficheData['category'])) {
                 $message = "Erreur lors de la génération de la fiche.";
             } else {
                 $quiz = generateQuiz($ficheData['fiche']);
-                
+
                 $stmt = $pdo->prepare('INSERT INTO nfn_fiches (user_id, input, titre, categorie, fiche_text, quiz, created_at) VALUES (?, ?, ?, ?, ?, ?, NOW())');
                 $stmt->execute([
                     $_SESSION['user_id'], $input, $ficheData['title'], $ficheData['category'], $ficheData['fiche'], json_encode($quiz)
@@ -46,7 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'text' => $ficheData['fiche'],
                     'quiz' => $quiz
                 ];
-                $remaining--;
             }
         }
     }
