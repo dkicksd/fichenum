@@ -94,13 +94,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
   <?php endif; ?>
 
   <div class="d-flex gap-3 mb-4">
-    <div class="plan-card flex-fill" data-plan="free">
-      <h2 class="h5 mb-1">Formule gratuite</h2>
-      <p class="mb-0">Profitez des fonctionnalités de base.</p>
+    <div class="plan-card card flex-fill text-center" data-plan="free">
+      <div class="card-body">
+        <div class="text-primary mb-2">
+          <i class="fas fa-gift fa-2x" aria-hidden="true"></i>
+        </div>
+        <h2 class="card-title h5 mb-1">Formule gratuite</h2>
+        <p class="plan-price h4 fw-bold mb-1">0&nbsp;&euro;</p>
+        <p class="card-text small text-muted mb-0">Profitez des fonctionnalités de base.</p>
+      </div>
     </div>
-    <div class="plan-card flex-fill" data-plan="premium">
-      <h2 class="h5 mb-1">Formule premium</h2>
-      <p class="mb-0">Toutes les options pour 4,90&nbsp;&euro;.</p>
+    <div class="plan-card card flex-fill text-center" data-plan="premium">
+      <div class="card-body">
+        <div class="text-warning mb-2">
+          <i class="fas fa-crown fa-2x" aria-hidden="true"></i>
+        </div>
+        <h2 class="card-title h5 mb-1">Formule premium</h2>
+        <p class="plan-price h4 fw-bold mb-1">4,90&nbsp;&euro;</p>
+        <p class="card-text small text-muted mb-0">Toutes les options avancées.</p>
+      </div>
     </div>
   </div>
 
