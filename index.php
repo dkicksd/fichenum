@@ -73,15 +73,15 @@ $plan = $_SESSION['plan'] ?? null;
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
 <?php if (!$username): ?>
           <a href="/register.php" class="btn btn-primary btn-lg px-4 py-2">
-            <i class="fas fa-user-plus me-2"></i>Créer un compte
+            <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Créer un compte
           </a>
 <?php else: ?>
           <a href="/create_fiche.php" class="btn btn-primary btn-lg px-4 py-2">
-            <i class="fas fa-magic me-2"></i>Nouvelle fiche
+            <i class="fas fa-magic me-2" aria-hidden="true"></i>Nouvelle fiche
           </a>
 <?php endif; ?>
           <a href="#features" class="btn btn-outline-light btn-lg px-4 py-2">
-            <i class="fas fa-compass me-2"></i>Découvrir
+            <i class="fas fa-compass me-2" aria-hidden="true"></i>Découvrir
           </a>
         </div>
       </div>
@@ -99,7 +99,7 @@ $plan = $_SESSION['plan'] ?? null;
       <div class="col-md-4">
         <div class="feature-card">
           <div class="feature-icon">
-            <i class="fas fa-bolt"></i>
+            <i class="fas fa-bolt" aria-hidden="true"></i>
           </div>
           <h3 class="h5 fw-semibold mb-3">Génération IA instantanée</h3>
           <p class="mb-0">Transformez vos idées en fiches pédagogiques en quelques secondes avec notre IA intelligente et précise.</p>
@@ -108,7 +108,7 @@ $plan = $_SESSION['plan'] ?? null;
       <div class="col-md-4">
         <div class="feature-card">
           <div class="feature-icon">
-            <i class="fas fa-users"></i>
+            <i class="fas fa-users" aria-hidden="true"></i>
           </div>
           <h3 class="h5 fw-semibold mb-3">Communauté mobile</h3>
           <p class="mb-0">Commentez, échangez et collaborez sur vos fiches préférées via notre réseau social d'apprentissage.</p>
@@ -117,7 +117,7 @@ $plan = $_SESSION['plan'] ?? null;
       <div class="col-md-4">
         <div class="feature-card">
           <div class="feature-icon">
-            <i class="fas fa-cloud-download-alt"></i>
+            <i class="fas fa-cloud-download-alt" aria-hidden="true"></i>
           </div>
           <h3 class="h5 fw-semibold mb-3">Accessible hors-ligne</h3>
           <p class="mb-0">Vos dernières fiches restent accessibles même sans connexion, pour réviser en toute situation.</p>
@@ -136,35 +136,35 @@ $plan = $_SESSION['plan'] ?? null;
         
         <div class="eco-badge">
           <div class="eco-icon">
-            <i class="fas fa-leaf"></i>
+            <i class="fas fa-leaf" aria-hidden="true"></i>
           </div>
           <span>Code ultra-léger optimisé pour mobile</span>
         </div>
         
         <div class="eco-badge">
           <div class="eco-icon">
-            <i class="fas fa-cloud"></i>
+            <i class="fas fa-cloud" aria-hidden="true"></i>
           </div>
           <span>Compression WebP et chargement différé</span>
         </div>
         
         <div class="eco-badge">
           <div class="eco-icon">
-            <i class="fas fa-battery-three-quarters"></i>
+            <i class="fas fa-battery-three-quarters" aria-hidden="true"></i>
           </div>
           <span>Service worker économe en énergie</span>
         </div>
         
         <div class="eco-badge">
           <div class="eco-icon">
-            <i class="fas fa-server"></i>
+            <i class="fas fa-server" aria-hidden="true"></i>
           </div>
           <span>Hébergement vert certifié</span>
         </div>
         
         <div class="mt-4">
           <a href="/green.php" class="btn btn-outline-primary mt-3">
-            <i class="fas fa-seedling me-2"></i>Découvrir notre charte éco-responsable
+            <i class="fas fa-seedling me-2" aria-hidden="true"></i>Découvrir notre charte éco-responsable
           </a>
         </div>
       </div>
@@ -243,11 +243,11 @@ $plan = $_SESSION['plan'] ?? null;
     
     <div class="d-flex flex-wrap justify-content-center gap-3">
       <a href="/explore.php" class="btn btn-primary btn-lg px-4 py-2">
-        <i class="fas fa-binoculars me-2"></i>Explorer les fiches
+        <i class="fas fa-binoculars me-2" aria-hidden="true"></i>Explorer les fiches
       </a>
 <?php if (!$username): ?>
       <a href="/register.php" class="btn btn-outline-primary btn-lg px-4 py-2">
-        <i class="fas fa-user-plus me-2"></i>Créer un compte gratuit
+        <i class="fas fa-user-plus me-2" aria-hidden="true"></i>Créer un compte gratuit
       </a>
 <?php endif; ?>
     </div>
@@ -292,10 +292,10 @@ $plan = $_SESSION['plan'] ?? null;
         </h4>
         <p>Apprendre efficacement, partout, tout en respectant notre planète.</p>
         <div class="social-icons mt-3">
-          <a href="#"><i class="fab fa-facebook-f"></i></a>
-          <a href="#"><i class="fab fa-twitter"></i></a>
-          <a href="#"><i class="fab fa-instagram"></i></a>
-          <a href="#"><i class="fab fa-linkedin-in"></i></a>
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+          <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
         </div>
       </div>
       <div class="col-lg-4 mb-4 mb-lg-0">

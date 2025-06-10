@@ -73,16 +73,16 @@ $fiche['views']++;
 
   <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
     <button id="like-btn" class="btn btn-sm <?= $userLiked ? 'btn-primary active' : 'btn-outline-primary' ?>" aria-label="J’aime"<?= $userLiked ? ' aria-pressed="true"' : '' ?>>
-      <i class="fas fa-thumbs-up me-1"></i><span id="like-count"><?= (int)$fiche['likes'] ?></span>
+      <i class="fas fa-thumbs-up me-1" aria-hidden="true"></i><span id="like-count"><?= (int)$fiche['likes'] ?></span>
     </button>
     <button id="share-btn" class="btn btn-sm btn-outline-secondary" aria-label="Partager">
-      <i class="fas fa-share me-1"></i><span id="share-count"><?= (int)$fiche['shares'] ?></span>
+      <i class="fas fa-share me-1" aria-hidden="true"></i><span id="share-count"><?= (int)$fiche['shares'] ?></span>
     </button>
     <a id="download-btn" href="download_pdf.php?id=<?= $fiche['id'] ?>" class="btn btn-sm btn-outline-success">
-      <i class="fas fa-file-pdf me-1"></i>Télécharger (<span id="download-count"><?= (int)$fiche['downloads'] ?></span>)
+      <i class="fas fa-file-pdf me-1" aria-hidden="true"></i>Télécharger (<span id="download-count"><?= (int)$fiche['downloads'] ?></span>)
     </a>
     <div class="ms-auto text-muted">
-      <i class="fas fa-eye me-1"></i><span id="view-count"><?= (int)$fiche['views'] ?></span>
+      <i class="fas fa-eye me-1" aria-hidden="true"></i><span id="view-count"><?= (int)$fiche['views'] ?></span>
     </div>
   </div>
 </div>
