@@ -93,28 +93,50 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <div class="alert alert-info"><?= htmlspecialchars($message) ?></div>
   <?php endif; ?>
 
-  <div class="d-flex gap-3 mb-4">
-    <div class="plan-card card flex-fill text-center" data-plan="free">
-      <div class="card-body">
-        <div class="text-primary mb-2">
-          <i class="fas fa-gift fa-2x" aria-hidden="true"></i>
+<div class="row g-4 mb-4">
+  <!-- Carte FREE -->
+  <div class="col-md-6">
+    <div class="plan-card card h-100 text-center border-primary border-2" data-plan="free" style="cursor:pointer;">
+      <div class="card-body d-flex flex-column">
+        <div class="mb-3 text-primary">
+          <i class="fas fa-gift fa-3x"></i>
         </div>
-        <h2 class="card-title h5 mb-1">Formule gratuite</h2>
-        <p class="plan-price h4 fw-bold mb-1">0&nbsp;&euro;</p>
-        <p class="card-text small text-muted mb-0">Profitez des fonctionnalités de base.</p>
-      </div>
-    </div>
-    <div class="plan-card card flex-fill text-center" data-plan="premium">
-      <div class="card-body">
-        <div class="text-warning mb-2">
-          <i class="fas fa-crown fa-2x" aria-hidden="true"></i>
+        <h2 class="card-title h5">Formule gratuite</h2>
+        <p class="plan-price h3 fw-bold mb-3">0&nbsp;&euro;</p>
+        <ul class="list-group list-group-flush mb-4">
+          <li class="list-group-item">Accès aux fiches gratuites</li>
+          <li class="list-group-item">Création de compte</li>
+          <li class="list-group-item">Historique des achats</li>
+        </ul>
+        <div class="mt-auto">
+          <button class="btn btn-outline-primary w-100">Choisir ce plan</button>
         </div>
-        <h2 class="card-title h5 mb-1">Formule premium</h2>
-        <p class="plan-price h4 fw-bold mb-1">4,90&nbsp;&euro;</p>
-        <p class="card-text small text-muted mb-0">Toutes les options avancées.</p>
       </div>
     </div>
   </div>
+
+  <!-- Carte PREMIUM -->
+  <div class="col-md-6">
+    <div class="plan-card card h-100 text-center border-warning border-2" data-plan="premium" style="cursor:pointer;">
+      <div class="card-body d-flex flex-column">
+        <div class="mb-3 text-warning">
+          <i class="fas fa-crown fa-3x"></i>
+        </div>
+        <h2 class="card-title h5">Formule Premium</h2>
+        <p class="plan-price h3 fw-bold mb-3">4,90&nbsp;&euro;</p>
+        <ul class="list-group list-group-flush mb-4">
+          <li class="list-group-item">Toutes les fiches illimitées</li>
+          <li class="list-group-item">Options de génération avancée</li>
+          <li class="list-group-item">Support prioritaire</li>
+        </ul>
+        <div class="mt-auto">
+          <button class="btn btn-warning w-100">Choisir ce plan</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 
   <div id="register-form" style="display:none">
   <form method="post" novalidate>
