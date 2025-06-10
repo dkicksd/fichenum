@@ -72,10 +72,10 @@ $fiche['views']++;
   </div>
 
   <div class="d-flex flex-wrap gap-2 align-items-center mb-4">
-    <button id="like-btn" class="btn btn-sm <?= $userLiked ? 'btn-primary active' : 'btn-outline-primary' ?>"<?= $userLiked ? ' aria-pressed="true"' : '' ?>>
+    <button id="like-btn" class="btn btn-sm <?= $userLiked ? 'btn-primary active' : 'btn-outline-primary' ?>" aria-label="J’aime"<?= $userLiked ? ' aria-pressed="true"' : '' ?>>
       <i class="fas fa-thumbs-up me-1"></i><span id="like-count"><?= (int)$fiche['likes'] ?></span>
     </button>
-    <button id="share-btn" class="btn btn-sm btn-outline-secondary">
+    <button id="share-btn" class="btn btn-sm btn-outline-secondary" aria-label="Partager">
       <i class="fas fa-share me-1"></i><span id="share-count"><?= (int)$fiche['shares'] ?></span>
     </button>
     <a id="download-btn" href="download_pdf.php?id=<?= $fiche['id'] ?>" class="btn btn-sm btn-outline-success">
