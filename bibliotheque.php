@@ -4,7 +4,10 @@ require_once 'config.php';
 
 // Récupérer toutes les fiches et les catégories distinctes avec les compteurs
 $stmt = $pdo->query(
-    'SELECT id, titre, categorie, views, likes, shares FROM nfn_fiches ORDER BY created_at ASC'
+    'SELECT f.id, f.titre, f.categorie, f.views, f.likes, f.shares, u.username
+     FROM nfn_fiches f
+     JOIN nfn_users u ON f.user_id = u.id
+     ORDER BY f.created_at ASC'
 );
 $fiches = $stmt->fetchAll();
 $catsStmt = $pdo->query('SELECT DISTINCT categorie FROM nfn_fiches ORDER BY categorie');
@@ -79,6 +82,7 @@ $role = $_SESSION['role'] ?? null;
           <div class="fiche-card position-relative h-100 p-3" data-title="<?= strtolower(htmlspecialchars($fiche['titre'])) ?>" data-category="<?= htmlspecialchars($fiche['categorie']) ?>">
             <h5 class="fw-semibold mb-1"><?= htmlspecialchars($fiche['titre']) ?></h5>
             <p class="text-muted mb-2"><?= htmlspecialchars($fiche['categorie']) ?></p>
+            <p class="small text-muted mb-2">Par <?= htmlspecialchars($fiche['username']) ?></p>
             <div class="d-flex gap-3 small text-muted mb-2 fiche-stats">
                 <div><i class="fas fa-eye me-1" aria-hidden="true"></i><?= (int)$fiche['views'] ?></div>
                 <div><i class="fas fa-thumbs-up me-1" aria-hidden="true"></i><?= (int)$fiche['likes'] ?></div>
