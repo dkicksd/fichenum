@@ -16,12 +16,18 @@
       --neutral-200: #dee2e6;
       --neutral-300: #ced4da;
       --neutral-400: #adb5bd;
-      --neutral-500: #6c757d;
+      /* Darker neutral-500 to ensure at least 7:1 contrast on white */
+      --neutral-500: #4f5459;
       --neutral-600: #495057;
       --neutral-700: #343a40;
       --neutral-800: #212529;
-      --neutral-900: #121416;
-    }
+    --neutral-900: #121416;
+  }
+
+  /* Override Bootstrap muted text to use higher contrast */
+  .text-muted {
+    color: var(--neutral-500) !important;
+  }
     
     body {
       background-color: var(--bs-body-bg);
