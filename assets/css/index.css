@@ -291,17 +291,25 @@
 }
 
 .plan-card {
+  background: #fff;
   border: 1px solid var(--neutral-300);
-  border-radius: 8px;
-  padding: 1rem;
+  border-radius: 12px;
   cursor: pointer;
-  transition: background-color 0.3s, border-color 0.3s, box-shadow 0.3s;
+  transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.plan-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.08);
+}
+
+.plan-card .plan-price {
+  color: var(--primary-700);
 }
 
 .plan-card.active {
   border-color: var(--primary-500);
-  background-color: var(--primary-50);
-  box-shadow: 0 0 8px rgba(0,0,0,0.1);
+  box-shadow: 0 0 0 3px var(--primary-100);
 }
     /* Contraste vérifié */
     /* Toutes les combinaisons texte/fond respectent WCAG AA au minimum */
