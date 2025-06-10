@@ -26,6 +26,7 @@ $role = $_SESSION['role'] ?? null;
   <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
+<a href="#main-content" class="visually-hidden-focusable skip-link">Aller au contenu principal</a>
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container">
     <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
@@ -56,6 +57,8 @@ $role = $_SESSION['role'] ?? null;
     </div>
   </div>
 </nav>
+
+<main id="main-content">
 <div class="container py-4">
   <h1 class="mb-4">Bibliothèque</h1>
   <div class="mb-3">
@@ -88,6 +91,7 @@ $role = $_SESSION['role'] ?? null;
     </div>
   <?php endif; ?>
 </div>
+</main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 let active = 'all';

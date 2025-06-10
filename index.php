@@ -23,6 +23,7 @@ $plan = $_SESSION['plan'] ?? null;
 
 </head>
 <body>
+<a href="#main-content" class="visually-hidden-focusable skip-link">Aller au contenu principal</a>
 
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container">
@@ -57,6 +58,8 @@ $plan = $_SESSION['plan'] ?? null;
     </div>
   </div>
 </nav>
+
+<main id="main-content">
 
 <section class="hero">
   <div class="container">
@@ -283,6 +286,7 @@ $plan = $_SESSION['plan'] ?? null;
   </div>
 </section>
 
+</main>
 <footer>
   <div class="container">
     <div class="row">

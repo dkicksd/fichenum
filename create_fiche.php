@@ -153,6 +153,7 @@ EOT;
   <link rel="stylesheet" href="/assets/css/index.css"> <!-- Ton style perso -->
 </head>
 <body>
+<a href="#main-content" class="visually-hidden-focusable skip-link">Aller au contenu principal</a>
 
 <!-- 🧭 NAVBAR -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
@@ -166,6 +167,8 @@ EOT;
     </div>
   </div>
 </nav>
+
+<main id="main-content">
 
 <!-- 📝 CONTENU PRINCIPAL -->
 <div class="container py-5" style="max-width: 700px;">
@@ -203,6 +206,7 @@ EOT;
     </div>
   <?php endif; ?>
 </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>

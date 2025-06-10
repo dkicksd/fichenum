@@ -24,6 +24,7 @@ $fiches = $stmt->fetchAll();
   <link rel="stylesheet" href="assets/css/index.css">
 </head>
 <body>
+<a href="#main-content" class="visually-hidden-focusable skip-link">Aller au contenu principal</a>
 <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
   <div class="container">
     <a class="navbar-brand fw-bold d-flex align-items-center" href="/">
@@ -43,6 +44,8 @@ $fiches = $stmt->fetchAll();
   </div>
 </nav>
 
+<main id="main-content">
+
 <div class="container py-5">
   <h1 class="mb-4">Mes fiches</h1>
   <?php if (empty($fiches)): ?>
@@ -61,6 +64,7 @@ $fiches = $stmt->fetchAll();
     </div>
   <?php endif; ?>
 </div>
+</main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
