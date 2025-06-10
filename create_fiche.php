@@ -182,7 +182,7 @@ EOT;
     </div>
     <button type="submit" class="btn btn-primary">Générer la fiche</button>
     <div id="progress-container" class="progress mt-3 d-none" style="height:20px;">
-      <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width:0%"></div>
+      <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%"></div>
     </div>
     <p class="mt-2 text-muted">Fiches restantes : <?= $remaining ?></p>
   </form>
@@ -216,11 +216,13 @@ document.addEventListener('DOMContentLoaded', () => {
       e.preventDefault();
       progressContainer.classList.remove('d-none');
       progressBar.style.width = '0%';
+      progressBar.setAttribute('aria-valuenow', '0');
       let width = 0;
       const interval = setInterval(() => {
         if (width < 95) {
           width += 5;
           progressBar.style.width = width + '%';
+          progressBar.setAttribute('aria-valuenow', width.toString());
         }
       }, 500);
 
@@ -230,6 +232,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const html = await response.text();
         clearInterval(interval);
         progressBar.style.width = '100%';
+        progressBar.setAttribute('aria-valuenow', '100');
         document.open();
         document.write(html);
         document.close();
@@ -237,6 +240,7 @@ document.addEventListener('DOMContentLoaded', () => {
         clearInterval(interval);
         progressBar.classList.add('bg-danger');
         progressBar.style.width = '100%';
+        progressBar.setAttribute('aria-valuenow', '100');
       }
     });
   }
