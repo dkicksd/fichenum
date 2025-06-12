@@ -199,6 +199,7 @@ function togglePassword(fieldId) {
   }
 }
 
+// Plan potentially chosen via URL parameter
 const preselectPlan = <?= json_encode($preselectPlan) ?>;
 document.querySelectorAll('.plan-card').forEach(card => {
   card.addEventListener('click', () => {
