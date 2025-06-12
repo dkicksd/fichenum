@@ -13,9 +13,11 @@ if (!isset($_SESSION['user_id'])) {
 
 // Gestion des limites de génération pour les comptes gratuits
 $plan = $_SESSION['plan'] ?? 'free';
-$remaining = '∞';
+$weekRemaining = '∞';
+$dayRemaining = '∞';
 $dayCount = 0;
 $weekCount = 0;
+$nextGenerationDate = '';
 
 if ($plan === 'free') {
     // Fiches créées aujourd'hui
@@ -28,8 +30,24 @@ if ($plan === 'free') {
     $weekStmt->execute([$_SESSION['user_id']]);
     $weekCount = (int)$weekStmt->fetchColumn();
 
-    $remaining = 3 - $weekCount;
-    if ($remaining < 0) $remaining = 0;
+    $dayRemaining = max(1 - $dayCount, 0);
+    $weekRemaining = max(3 - $weekCount, 0);
+
+    if ($dayCount >= 1) {
+        $nextGenerationDate = date('d/m/Y', strtotime('tomorrow'));
+    }
+
+    if ($weekCount >= 3) {
+        $firstStmt = $pdo->prepare('SELECT MIN(created_at) FROM nfn_fiches WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)');
+        $firstStmt->execute([$_SESSION['user_id']]);
+        $earliest = $firstStmt->fetchColumn();
+        if ($earliest) {
+            $weekDate = date('d/m/Y', strtotime($earliest . ' +7 days'));
+            if (!$nextGenerationDate || strtotime($weekDate) > strtotime($nextGenerationDate)) {
+                $nextGenerationDate = $weekDate;
+            }
+        }
+    }
 }
 
 $message = '';
@@ -42,9 +60,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if ($plan === 'free') {
             if ($dayCount >= 1) {
-                $message = "Vous avez déjà généré une fiche aujourd\'hui. Réessayez demain.";
+                $message = "Vous avez déjà généré une fiche aujourd'hui. Réessayez le " . $nextGenerationDate . ".";
             } elseif ($weekCount >= 3) {
-                $message = "Vous avez atteint la limite de 3 fiches cette semaine.";
+                $message = "Vous avez atteint la limite de 3 fiches cette semaine. Vous pourrez générer une nouvelle fiche le " . $nextGenerationDate . ".";
             } else {
                 $ficheData = generateFiche($input);
                 if (!$ficheData || empty($ficheData['fiche']) || empty($ficheData['title']) || empty($ficheData['category'])) {
@@ -65,7 +83,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     ];
                     $weekCount++;
                     $dayCount++;
-                    $remaining = max(3 - $weekCount, 0);
+                    $weekRemaining = max(3 - $weekCount, 0);
+                    $dayRemaining = max(1 - $dayCount, 0);
+                    if ($dayRemaining == 0) {
+                        $nextGenerationDate = date('d/m/Y', strtotime('tomorrow'));
+                    }
+                    if ($weekRemaining == 0) {
+                        $firstStmt = $pdo->prepare('SELECT MIN(created_at) FROM nfn_fiches WHERE user_id = ? AND created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)');
+                        $firstStmt->execute([$_SESSION['user_id']]);
+                        $earliest = $firstStmt->fetchColumn();
+                        if ($earliest) {
+                            $weekDate = date('d/m/Y', strtotime($earliest . ' +7 days'));
+                            if (!$nextGenerationDate || strtotime($weekDate) > strtotime($nextGenerationDate)) {
+                                $nextGenerationDate = $weekDate;
+                            }
+                        }
+                    }
                 }
             }
         } else {
@@ -228,7 +261,10 @@ EOT;
     <div id="progress-container" class="progress mt-3 d-none" style="height:20px;">
       <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%"></div>
     </div>
-    <p class="mt-2 text-muted">Fiches restantes : <?= $remaining ?></p>
+    <p class="mt-2 text-muted">Fiches restantes aujourd'hui : <?= $dayRemaining ?> | semaine : <?= $weekRemaining ?></p>
+  <?php if ($nextGenerationDate && ($dayRemaining == 0 || $weekRemaining == 0)): ?>
+    <p class="mt-2 text-muted">Prochaine génération possible : <?= htmlspecialchars($nextGenerationDate) ?></p>
+  <?php endif; ?>
   </form>
 
   <?php if (!empty($fiche)): ?>
