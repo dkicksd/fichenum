@@ -252,7 +252,7 @@ EOT;
   <h1 class="mb-4">Créer une fiche</h1>
 
   <?php if (!empty($message)): ?>
-    <div class="alert alert-warning"><?= htmlspecialchars($message) ?></div>
+    <div class="alert alert-warning"><?= $message ?></div>
   <?php endif; ?>
 
   <form method="post" id="fiche-form">
