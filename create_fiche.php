@@ -15,6 +15,7 @@ if (!isset($_SESSION['user_id'])) {
 $plan = $_SESSION['plan'] ?? 'free';
 $weekRemaining = '∞';
 $dayRemaining = '∞';
+$displayDayRemaining = '∞';
 $dayCount = 0;
 $weekCount = 0;
 $nextGenerationDate = '';
@@ -32,6 +33,7 @@ if ($plan === 'free') {
 
     $dayRemaining = max(1 - $dayCount, 0);
     $weekRemaining = max(3 - $weekCount, 0);
+    $displayDayRemaining = min($dayRemaining, $weekRemaining);
 
     if ($dayCount >= 1) {
         $nextGenerationDate = date('d/m/Y', strtotime('tomorrow'));
@@ -60,9 +62,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         if ($plan === 'free') {
             if ($dayCount >= 1) {
-                $message = "Vous avez déjà généré une fiche aujourd'hui. Réessayez le " . $nextGenerationDate . ".";
+                $message = "Vous avez déjà généré une fiche aujourd'hui. Réessayez le " . $nextGenerationDate . " ou <a href='register.php?plan=premium'>passez au plan Premium</a>.";
             } elseif ($weekCount >= 3) {
-                $message = "Vous avez atteint la limite de 3 fiches cette semaine. Vous pourrez générer une nouvelle fiche le " . $nextGenerationDate . ".";
+                $message = "Vous avez atteint la limite de 3 fiches cette semaine. Vous pourrez générer une nouvelle fiche le " . $nextGenerationDate . ". Pour des fiches illimitées, <a href='register.php?plan=premium'>passez au plan Premium</a>.";
             } else {
                 $ficheData = generateFiche($input);
                 if (!$ficheData || empty($ficheData['fiche']) || empty($ficheData['title']) || empty($ficheData['category'])) {
@@ -85,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $dayCount++;
                     $weekRemaining = max(3 - $weekCount, 0);
                     $dayRemaining = max(1 - $dayCount, 0);
+                    $displayDayRemaining = min($dayRemaining, $weekRemaining);
                     if ($dayRemaining == 0) {
                         $nextGenerationDate = date('d/m/Y', strtotime('tomorrow'));
                     }
@@ -261,7 +264,7 @@ EOT;
     <div id="progress-container" class="progress mt-3 d-none" style="height:20px;">
       <div id="progress-bar" class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" style="width:0%"></div>
     </div>
-    <p class="mt-2 text-muted">Fiches restantes aujourd'hui : <?= $dayRemaining ?> | semaine : <?= $weekRemaining ?></p>
+      <p class="mt-2 text-muted">Fiches restantes aujourd'hui : <?= $displayDayRemaining ?> | semaine : <?= $weekRemaining ?></p>
   <?php if ($nextGenerationDate && ($dayRemaining == 0 || $weekRemaining == 0)): ?>
     <p class="mt-2 text-muted">Prochaine génération possible : <?= htmlspecialchars($nextGenerationDate) ?></p>
   <?php endif; ?>
