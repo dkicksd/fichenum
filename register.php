@@ -1,7 +1,19 @@
 <?php
+session_start();
 require_once 'config.php';
 
 $message = '';
+$preselectPlan = '';
+if (isset($_GET['plan']) && in_array($_GET['plan'], ['free', 'premium'], true)) {
+    $preselectPlan = $_GET['plan'];
+}
+
+if ($preselectPlan === 'premium' && isset($_SESSION['user_id'])) {
+    $stmt = $pdo->prepare("UPDATE nfn_users SET plan = 'premium' WHERE id = ?");
+    $stmt->execute([$_SESSION['user_id']]);
+    $_SESSION['plan'] = 'premium';
+    $message = "Votre compte a été mis à niveau vers le plan Premium.";
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
@@ -187,6 +199,7 @@ function togglePassword(fieldId) {
   }
 }
 
+const preselectPlan = <?= json_encode($preselectPlan) ?>;
 document.querySelectorAll('.plan-card').forEach(card => {
   card.addEventListener('click', () => {
     document.querySelectorAll('.plan-card').forEach(c => c.classList.remove('active'));
@@ -197,6 +210,16 @@ document.querySelectorAll('.plan-card').forEach(card => {
     container.scrollIntoView({behavior: 'smooth'});
   });
 });
+
+if (preselectPlan) {
+  const card = document.querySelector(`.plan-card[data-plan="${preselectPlan}"]`);
+  if (card) {
+    card.classList.add('active');
+    document.getElementById('plan-input').value = preselectPlan;
+    const container = document.getElementById('register-form');
+    container.style.display = 'block';
+  }
+}
 </script>
 </body>
 </html>
