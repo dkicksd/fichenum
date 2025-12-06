@@ -73,6 +73,22 @@
       max-width: 600px;
       margin: 0 auto 2rem;
     }
+
+    .hero-plan {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 999px;
+      padding: 0.5rem 1rem;
+    }
+
+    .plan-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 999px;
+      padding: 0.35rem 0.75rem;
+      font-weight: 600;
+    }
     
     .btn-primary {
       background-color: var(--primary-500);
