@@ -3,6 +3,8 @@ session_start();
 $username = $_SESSION["username"] ?? null;
 $role = $_SESSION['role'] ?? null;
 $plan = $_SESSION['plan'] ?? null;
+$planLabels = ['premium' => 'Premium', 'free' => 'Gratuit'];
+$currentPlanLabel = $planLabels[$plan] ?? ($plan ? ucfirst((string)$plan) : '');
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -43,18 +45,22 @@ $plan = $_SESSION['plan'] ?? null;
         <li class="nav-item"><a class="nav-link" href="/dashboard.php">Mes fiches</a></li>
 <?php endif; ?>
       </ul>
-        <div class="ms-lg-3 mt-3 mt-lg-0">
+      <div class="ms-lg-3 mt-3 mt-lg-0 d-flex align-items-center gap-2 flex-wrap justify-content-end">
 <?php if ($username): ?>
-          <span class="navbar-text me-3">Bonjour, <?= htmlspecialchars($username) ?></span>
+        <span class="badge plan-pill text-dark bg-white">
+          <i class="fas fa-gem me-1 text-warning" aria-hidden="true"></i>
+          <?= htmlspecialchars($currentPlanLabel) ?>
+        </span>
+        <span class="navbar-text me-1">Bonjour, <?= htmlspecialchars($username) ?></span>
 <?php if ($role === 'admin'): ?>
-          <a href="/admin/dashboard.php" class="btn btn-sm btn-warning me-2">Dashboard</a>
+        <a href="/admin/dashboard.php" class="btn btn-sm btn-warning me-1">Dashboard</a>
 <?php endif; ?>
-          <a href="/logout.php" class="btn btn-sm btn-outline-light">Déconnexion</a>
+        <a href="/logout.php" class="btn btn-sm btn-outline-light">Déconnexion</a>
 <?php else: ?>
-          <a href="/login.php" class="btn btn-sm btn-outline-light">Connexion</a>
-          <a href="/register.php" class="btn btn-sm btn-primary ms-2">Inscription</a>
+        <a href="/login.php" class="btn btn-sm btn-outline-light">Connexion</a>
+        <a href="/register.php" class="btn btn-sm btn-primary ms-2">Inscription</a>
 <?php endif; ?>
-        </div>
+      </div>
     </div>
   </div>
 </nav>
@@ -67,14 +73,29 @@ $plan = $_SESSION['plan'] ?? null;
       <div class="col-lg-8">
         <h1>Fiches IA. Mobile. Durable.</h1>
 <?php if ($username): ?>
-          <p class="lead">Bienvenue, <?= htmlspecialchars($username) ?>.</p>
-         <?php if ($plan): ?>
-  <span class="badge bg-warning fs-6">
-    <i class="fas fa-gem me-1"></i><?= htmlspecialchars($plan) ?>
-  </span>
+        <p class="lead mb-1">Bienvenue, <?= htmlspecialchars($username) ?>.</p>
+        <div class="hero-plan d-inline-flex align-items-center gap-3 mt-3">
+          <span class="badge plan-pill bg-white text-dark">
+            <i class="fas fa-gem me-1 text-warning" aria-hidden="true"></i>
+            Plan <?= htmlspecialchars(strtolower($currentPlanLabel)) ?>
+          </span>
+          <div class="text-start small text-white-75">
+<?php if ($plan === 'premium'): ?>
+            Accès illimité aux générations, exports avancés et priorisation du support.
+<?php else: ?>
+            3 fiches/semaine et 1 génération quotidienne. Passez en Premium pour lever les limites.
 <?php endif; ?>
+          </div>
+<?php if ($plan === 'free'): ?>
+          <a class="btn btn-warning btn-sm ms-auto" href="/register.php?plan=premium">
+            <i class="fas fa-rocket me-1" aria-hidden="true"></i>Activer le Premium
+          </a>
 <?php endif; ?>
-        <p>Générez vos fiches pédagogiques où que vous soyez, sans gaspiller d'énergie ni compromettre la qualité.</p>
+        </div>
+<?php else: ?>
+        <p class="lead">Rejoignez gratuitement la communauté et choisissez le plan qui vous correspond.</p>
+<?php endif; ?>
+        <p class="mb-0">Générez vos fiches pédagogiques où que vous soyez, sans gaspiller d'énergie ni compromettre la qualité.</p>
         <div class="d-flex flex-wrap justify-content-center gap-3 mt-4">
 <?php if (!$username): ?>
           <a href="/register.php" class="btn btn-primary btn-lg px-4 py-2">
@@ -84,10 +105,83 @@ $plan = $_SESSION['plan'] ?? null;
           <a href="/create_fiche.php" class="btn btn-primary btn-lg px-4 py-2">
             <i class="fas fa-magic me-2" aria-hidden="true"></i>Nouvelle fiche
           </a>
+          <a href="/dashboard.php" class="btn btn-outline-light btn-lg px-4 py-2">
+            <i class="fas fa-layer-group me-2" aria-hidden="true"></i>Mes fiches
+          </a>
 <?php endif; ?>
           <a href="#features" class="btn btn-outline-light btn-lg px-4 py-2">
             <i class="fas fa-compass me-2" aria-hidden="true"></i>Découvrir
           </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plans" class="py-5 bg-light">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="section-title">Choisissez votre formule</h2>
+      <p class="lead">Comparez l'expérience gratuite et Premium pour avancer en toute clarté.</p>
+<?php if ($username && $plan): ?>
+      <div class="alert alert-success d-inline-flex align-items-center gap-2 mt-3">
+        <i class="fas fa-user-check" aria-hidden="true"></i>
+        <span>Vous utilisez actuellement le plan <?= htmlspecialchars(strtolower($currentPlanLabel)) ?>.</span>
+<?php if ($plan === 'free'): ?>
+        <a href="/register.php?plan=premium" class="btn btn-sm btn-warning ms-3">Passer en Premium</a>
+<?php endif; ?>
+      </div>
+<?php endif; ?>
+    </div>
+
+    <div class="row g-4">
+      <div class="col-md-6">
+        <div class="plan-card h-100 p-4 border <?php if ($username && $plan === 'free') echo 'active'; ?>">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h3 class="h5 mb-0">Plan Gratuit</h3>
+            <span class="badge bg-primary-subtle text-primary">Inclu</span>
+          </div>
+          <p class="plan-price h3 fw-bold mb-3">0 €</p>
+          <ul class="list-unstyled mb-4">
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-primary me-2" aria-hidden="true"></i>3 fiches par semaine</li>
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-primary me-2" aria-hidden="true"></i>1 génération par jour</li>
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-primary me-2" aria-hidden="true"></i>Accès à la bibliothèque publique</li>
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-primary me-2" aria-hidden="true"></i>Support standard</li>
+          </ul>
+<?php if ($username): ?>
+  <?php if ($plan === 'free'): ?>
+          <a href="/register.php?plan=premium" class="btn btn-outline-primary w-100">Débloquer le Premium</a>
+  <?php else: ?>
+          <button class="btn btn-outline-secondary w-100" disabled>Plan secondaire</button>
+  <?php endif; ?>
+<?php else: ?>
+          <a href="/register.php?plan=free" class="btn btn-outline-primary w-100">Essayer gratuitement</a>
+<?php endif; ?>
+        </div>
+      </div>
+
+      <div class="col-md-6">
+        <div class="plan-card h-100 p-4 border border-warning-subtle <?php if ($username && $plan === 'premium') echo 'active'; ?>">
+          <div class="d-flex align-items-center justify-content-between mb-3">
+            <h3 class="h5 mb-0">Plan Premium</h3>
+            <span class="badge bg-warning text-dark"><i class="fas fa-gem me-1" aria-hidden="true"></i>Recommandé</span>
+          </div>
+          <p class="plan-price h3 fw-bold mb-3 text-warning">4,90 €</p>
+          <ul class="list-unstyled mb-4">
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-warning me-2" aria-hidden="true"></i>Générations illimitées</li>
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-warning me-2" aria-hidden="true"></i>Exports avancés (PDF, audio, e-book)</li>
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-warning me-2" aria-hidden="true"></i>Priorité sur les temps de réponse</li>
+            <li class="d-flex align-items-center mb-2"><i class="fas fa-check text-warning me-2" aria-hidden="true"></i>Support dédié et partage privé</li>
+          </ul>
+<?php if ($username): ?>
+  <?php if ($plan === 'premium'): ?>
+          <button class="btn btn-warning w-100" disabled>Plan actuel</button>
+  <?php else: ?>
+          <a href="/register.php?plan=premium" class="btn btn-warning w-100">Passer en Premium</a>
+  <?php endif; ?>
+<?php else: ?>
+          <a href="/register.php?plan=premium" class="btn btn-warning w-100">Rejoindre le Premium</a>
+<?php endif; ?>
         </div>
       </div>
     </div>
